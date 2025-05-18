@@ -378,6 +378,11 @@ public class AirportFrame extends javax.swing.JFrame {
 
         PR_MonthComboBox.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         PR_MonthComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Month" }));
+        PR_MonthComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PR_MonthComboBoxActionPerformed(evt);
+            }
+        });
         tabPassengerRegistration.add(PR_MonthComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 280, -1, -1));
 
         PR_FirstNameTextField.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
@@ -1416,6 +1421,7 @@ public class AirportFrame extends javax.swing.JFrame {
         }
         Tabs.setEnabledAt(5, false);
         Tabs.setEnabledAt(6, false);
+        Tabs.setEnabledAt(7, false);
     }//GEN-LAST:event_administratorActionPerformed
 
     private void userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userActionPerformed
@@ -1673,6 +1679,10 @@ public class AirportFrame extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }//GEN-LAST:event_userSelectActionPerformed
+
+    private void PR_MonthComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PR_MonthComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PR_MonthComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
