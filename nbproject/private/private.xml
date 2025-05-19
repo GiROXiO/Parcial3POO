@@ -6,8 +6,12 @@
             <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/src/core/views/AirportFrame.java</file>
             <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/src/core/controllers/AirplaneController.java</file>
             <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/src/core/controllers/utils/Status.java</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/src/core/controllers/FlightController.java</file>
             <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/src/core/controllers/PassengerController.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/json/passengers.json</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/json/flights.json</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/json/planes.json</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/src/core/controllers/LocationController.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/json/locations.json</file>
         </group>
     </open-files>
 </project-private>
