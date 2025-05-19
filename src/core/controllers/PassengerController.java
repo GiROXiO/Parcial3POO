@@ -13,6 +13,7 @@ public class PassengerController {
         {
             int idInt, yearInt, monthInt, dayInt, phoneCodeInt, phoneNumberInt;
             
+            
             // Verifica si el ID tiene entre 1 y 15 digitos
              
             try
@@ -30,6 +31,7 @@ public class PassengerController {
             {
                 return new Response("ID must be numeric", Status.BAD_REQUEST);
             }
+            
             
             // Verifica si el año de nacimiento es numérico
             
@@ -51,6 +53,7 @@ public class PassengerController {
                 return new Response("The year of birth must be numeric", Status.BAD_REQUEST);
             }
             
+            
             // Comprueba si la fecha es valida
             
             try
@@ -66,6 +69,7 @@ public class PassengerController {
                 return new Response("Date of Birth must be valid", Status.BAD_REQUEST);
             }
             
+            
             // Comprueba si el codigo telefonico tiene ente 1 y 3 digitos
             
             try
@@ -80,6 +84,7 @@ public class PassengerController {
             {
                 return new Response("Phone code must be numeric", Status.BAD_REQUEST);
             }
+            
             
             // Comprueba si el numero telefonico tiene ente 1 y 11 digitos
             

@@ -4,8 +4,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/src/core/views/AirportFrame.java</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/src/core/controllers/PassengerController.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/src/core/controllers/AirplaneController.java</file>
             <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/src/core/controllers/utils/Status.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/src/core/controllers/FlightController.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/src/core/controllers/PassengerController.java</file>
         </group>
     </open-files>
 </project-private>
