@@ -3,11 +3,14 @@ package core.controllers;
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import java.time.LocalDate;
-
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class PassengerController {
 
-    public static Response PassengerRegistration(String id, String firstName, String lastName, String yearBirthday, String monthBirthday, String dayBirthday, String phoneCode, String phoneNumber, String country)
+    public static Response PassengerRegistration(String ruta, String id, String firstName, String lastName, String yearBirthday, String monthBirthday, String dayBirthday, String phoneCode, String phoneNumber, String country)
     {
         try
         {
@@ -24,12 +27,33 @@ public class PassengerController {
                 {
                     return new Response("ID must be between 1 to 15 digits.", Status.BAD_REQUEST);
                 }
-                
-                // Hace falta añadir un condicional para ver si el ID es único dentro del storage
             }
             catch(Exception e)
             {
                 return new Response("ID must be numeric", Status.BAD_REQUEST);
+            }
+            
+            // Verifica si el ID ya existe
+            
+            try
+            {
+                idInt = Integer.parseInt(id);
+                String contenido = new String(Files.readAllBytes(Paths.get(ruta)));
+                JSONArray passengersJson = new JSONArray(contenido);
+                
+                for (int i = 0 ; i < passengersJson.length() ; i++)
+                {
+                    JSONObject passenger = passengersJson.getJSONObject(i);
+                    
+                    if(idInt == passenger.getInt("id"))
+                    {
+                        return new Response("The ID already exists", Status.BAD_REQUEST);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return new Response("Database does not exist", Status.INTERNAL_SERVER_ERROR);
             }
             
             
