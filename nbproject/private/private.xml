@@ -3,20 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
             <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Airport/src/core/views/AirportFrame.java</file>
             <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Airport/src/core/views/PanelRound.java</file>
-=======
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/src/core/views/AirportFrame.java</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/src/core/controllers/AirplaneController.java</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/src/core/controllers/utils/Status.java</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/src/core/controllers/PassengerController.java</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/json/passengers.json</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/json/flights.json</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/json/planes.json</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/src/core/controllers/LocationController.java</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Airport/json/locations.json</file>
->>>>>>> 826ddc4a80dd3a348d82c5f35a61a0e95f5208c5
         </group>
     </open-files>
 </project-private>

@@ -2,8 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package core.models;
+package core.models.flight;
 
+import core.models.location.Location;
+import core.models.passenger.Passenger;
+import core.models.plane.Plane;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -24,7 +27,6 @@ public class Flight {
     private int minutesDurationArrival;
     private int hoursDurationScale;
     private int minutesDurationScale;
-    
 
     public Flight(String id, Plane plane, Location departureLocation, Location arrivalLocation, LocalDateTime departureDate, int hoursDurationArrival, int minutesDurationArrival) {
         this.id = id;
@@ -83,8 +85,16 @@ public class Flight {
         return hoursDurationArrival;
     }
 
+    public void setHoursDurationArrival(int hoursDurationArrival) {
+        this.hoursDurationArrival = hoursDurationArrival;
+    }
+    
     public int getMinutesDurationArrival() {
         return minutesDurationArrival;
+    }
+
+    public void setMinutesDurationArrival(int minutesDurationArrival) {
+        this.minutesDurationArrival = minutesDurationArrival;
     }
 
     public int getHoursDurationScale() {
