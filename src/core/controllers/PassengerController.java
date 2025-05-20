@@ -2,11 +2,14 @@ package core.controllers;
 
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
+import core.models.passenger.Passenger;
+import core.models.storage.PassengerStorage;
 import java.time.LocalDate;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Month;
 
 public class PassengerController {
 
@@ -15,7 +18,7 @@ public class PassengerController {
         try
         {
             int idInt, yearInt, monthInt, dayInt, phoneCodeInt, phoneNumberInt;
-            
+            LocalDate fecha;
             
             // Verifica si el ID tiene entre 1 y 15 digitos
              
@@ -86,7 +89,7 @@ public class PassengerController {
                 monthInt = Integer.parseInt(monthBirthday);
                 dayInt = Integer.parseInt(dayBirthday);
                 
-                LocalDate fecha = LocalDate.of(yearInt, monthInt, dayInt);
+                fecha = LocalDate.of(yearInt, monthInt, dayInt);
             }
             catch(Exception e)
             {
@@ -140,7 +143,20 @@ public class PassengerController {
                 return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
             }
             
+            yearInt = Integer.parseInt(yearBirthday);
+            monthInt = Integer.parseInt(monthBirthday);
+            dayInt = Integer.parseInt(dayBirthday);
+            fecha = LocalDate.of(yearInt, monthInt, dayInt);
             
+            PassengerStorage storage = PassengerStorage.getInstance();
+            
+            if (!storage.add(new Passenger(Long.parseLong(id), firstName, lastName, fecha, Integer.parseInt(phoneCode), Long.parseLong(phoneNumber), country))) {
+                return new Response("A passenger with that id already exists", Status.BAD_REQUEST);
+            }
+            else
+            {
+                System.out.println(storage);
+            }
         }
         catch(Exception e)
         {
