@@ -2,6 +2,8 @@ package core.controllers;
 
 import core.controllers.utils.Response;
 import core.controllers.utils.Status;
+import core.models.location.Location;
+import core.models.storage.LocationStorage;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import org.json.JSONArray;
@@ -133,12 +135,21 @@ public class LocationController {
             {
                 return new Response("All fields must be filled in.", Status.BAD_REQUEST);
             }
+            
+            LocationStorage storage = LocationStorage.getInstance();
+            
+            if (!storage.add(new Location(id, name, city, country, Double.parseDouble(latitud), Double.parseDouble(longitud)))) {
+                return new Response("A location with that id already exists", Status.BAD_REQUEST);
+            }
+            else
+            {
+                return new Response("Location successfully registered", Status.CREATED);
+            }
         }
         catch(Exception e)
         {
             return new Response("Unexpected error.", Status.INTERNAL_SERVER_ERROR);
         }
-        
-        return null;
+
     }
 }

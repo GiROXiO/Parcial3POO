@@ -4,16 +4,20 @@
  */
 package core.views;
 
+import core.controllers.AirplaneController;
+import core.controllers.LocationController;
 import core.models.flight.Flight;
 import core.models.location.Location;
 import core.models.passenger.Passenger;
 import core.models.plane.Plane;
-import com.formdev.flatlaf.FlatDarkLaf;
+import core.controllers.PassengerController;
+import core.controllers.utils.Response;
+import core.models.storage.utils.JsonPath;
 import java.awt.Color;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import javax.swing.UIManager;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -1442,20 +1446,36 @@ public class AirportFrame extends javax.swing.JFrame {
 
     private void PR_RegisterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PR_RegisterButtonActionPerformed
         // TODO add your handling code here:
-        long id = Long.parseLong(PR_IDTextField.getText());
+        String id = PR_IDTextField.getText();
         String firstname = PR_FirstNameTextField.getText();
         String lastname = PR_LastNameTextField.getText();
-        int year = Integer.parseInt(PR_YearTextField.getText());
-        int month = Integer.parseInt(PR_MonthComboBox.getItemAt(PR_MonthComboBox.getSelectedIndex()));
-        int day = Integer.parseInt(PR_DayComboBox.getItemAt(PR_DayComboBox.getSelectedIndex()));
-        int phoneCode = Integer.parseInt(PR_codigoPaisTextField.getText());
-        long phone = Long.parseLong(PR_NumeroTelefonicoTextField.getText());
+        String year = PR_YearTextField.getText();
+        String month = PR_MonthComboBox.getItemAt(PR_MonthComboBox.getSelectedIndex());
+        String day = PR_DayComboBox.getItemAt(PR_DayComboBox.getSelectedIndex());
+        String phoneCode = PR_codigoPaisTextField.getText();
+        String phone = PR_NumeroTelefonicoTextField.getText();
         String country = PR_PaisTextField.getText();
-
-        LocalDate birthDate = LocalDate.of(year, month, day);
-
-        this.passengers.add(new Passenger(id, firstname, lastname, birthDate, phoneCode, phone, country));
-        this.userSelect.addItem("" + id);
+        
+        Response response = PassengerController.PassengerRegistration(JsonPath.PASSENGERS.getPath(), id, firstname, lastname, year, month, day, phoneCode, phone, country);
+        
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+            
+            PR_IDTextField.setText("");
+            PR_FirstNameTextField.setText("");
+            PR_LastNameTextField.setText("");
+            PR_YearTextField.setText("");
+            PR_codigoPaisTextField.setText("");
+            PR_NumeroTelefonicoTextField.setText("");
+            PR_PaisTextField.setText("");
+            PR_MonthComboBox.setSelectedIndex(0);
+            PR_DayComboBox.setSelectedIndex(0);
+            
+        }
     }//GEN-LAST:event_PR_RegisterButtonActionPerformed
 
     private void AR_CreateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AR_CreateButtonActionPerformed
@@ -1463,12 +1483,24 @@ public class AirportFrame extends javax.swing.JFrame {
         String id = AR_IdTextField.getText();
         String brand = AR_BrandTextField.getText();
         String model = AR_ModelTextField.getText();
-        int maxCapacity = Integer.parseInt(AR_MaxCapacityTextField.getText());
+        String maxCapacity = AR_MaxCapacityTextField.getText();
         String airline = AR_AirlineTextField.getText();
 
-        this.planes.add(new Plane(id, brand, model, maxCapacity, airline));
-
-        this.FR_PlaneComboBox.addItem(id);
+        Response response = AirplaneController.airplaneRegistration(JsonPath.PLANES.getPath(), id, brand, model, maxCapacity, airline);
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+            
+            AR_IdTextField.setText("");
+            AR_BrandTextField.setText("");
+            AR_ModelTextField.setText("");
+            AR_MaxCapacityTextField.setText("");
+            AR_AirlineTextField.setText("");
+            
+        }
     }//GEN-LAST:event_AR_CreateButtonActionPerformed
 
     private void LR_CreateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LR_CreateButtonActionPerformed
@@ -1477,14 +1509,26 @@ public class AirportFrame extends javax.swing.JFrame {
         String name = LR_AirportNameTextField.getText();
         String city = LR_AirportCityTextField.getText();
         String country = LR_AirportCountryTextField.getText();
-        double latitude = Double.parseDouble(LR_AirportLatitudeTextField.getText());
-        double longitude = Double.parseDouble(LR_AirportLongitudeTextField.getText());
+        String latitude = LR_AirportLatitudeTextField.getText();
+        String longitude = LR_AirportLongitudeTextField.getText();
 
-        this.locations.add(new Location(id, name, city, country, latitude, longitude));
-
-        this.FR_DepartureLocationComboBox.addItem(id);
-        this.FR_ArrivalLocationComboBox.addItem(id);
-        this.FR_ScaleLocationComboBox.addItem(id);
+        Response response = LocationController.LocationRegistration(JsonPath.LOCATIONS.getPath(), id, name, city, country, latitude, longitude);
+        
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+            
+            LR_AirportIdTextField.setText("");
+            LR_AirportNameTextField.setText("");
+            LR_AirportCityTextField.setText("");
+            LR_AirportCountryTextField.setText("");
+            LR_AirportLatitudeTextField.setText("");
+            LR_AirportLongitudeTextField.setText("");
+            
+        }
     }//GEN-LAST:event_LR_CreateButtonActionPerformed
 
     private void FR_CreateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FR_CreateButtonActionPerformed

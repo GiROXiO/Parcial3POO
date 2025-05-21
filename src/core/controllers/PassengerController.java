@@ -69,7 +69,7 @@ public class PassengerController {
                 
                 // Verifica si la persona no tiene más de 125 años (la persona más vieja del mundo vivio 122 años), no se si quitar esto la vd
                 
-                if (LocalDate.now().getYear() - yearInt > 125)
+                if (LocalDate.now().getYear() - yearInt > 125 | yearInt > LocalDate.now().getYear())
                 {
                     return new Response("The year of birth must be valid", Status.BAD_REQUEST);
                 }
@@ -133,11 +133,23 @@ public class PassengerController {
             
             try
             {
-                if (String.valueOf(country).length() <= 0)
+                
+                if (String.valueOf(firstName).isBlank())
+                {
+                    return new Response("The first name field must be filled in", Status.BAD_REQUEST);
+                }
+                
+                if (String.valueOf(lastName).isBlank())
+                {
+                    return new Response("The last name field must be filled in", Status.BAD_REQUEST);
+                }
+                
+                if (String.valueOf(country).isBlank())
                 {
                     return new Response("The country field must be filled in", Status.BAD_REQUEST);
                 }
             }
+         
             catch(Exception e)
             {
                 return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
@@ -155,7 +167,7 @@ public class PassengerController {
             }
             else
             {
-                System.out.println(storage);
+                return new Response("Passenger successfully registered", Status.CREATED);
             }
         }
         catch(Exception e)
@@ -163,7 +175,6 @@ public class PassengerController {
             return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }
         
-        return null;
     }
     
 }

@@ -12,10 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 
-/**
- *
- * @author jecas
- */
 public class PassengerStorage extends Storage<Passenger>{
     
     private static PassengerStorage instance;
