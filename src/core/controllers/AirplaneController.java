@@ -4,17 +4,15 @@ import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.plane.Plane;
 import core.models.storage.PlaneStorage;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class AirplaneController {
     
-    public static Response airplaneRegistration(String ruta, String id, String brand, String model, String maxCapacity, String airline)
+    public static Response airplaneRegistration(String id, String brand, String model, String maxCapacity, String airline)
     {
         try
         {
+            PlaneStorage storage = PlaneStorage.getInstance();
+            
             // Se verifica si el ID sigue el formato XXYYYYY
            
             try
@@ -52,6 +50,20 @@ public class AirplaneController {
             catch(Exception e)
             {
                 return new Response("ID must follow the XXYYYYY format.", Status.BAD_REQUEST);
+            }
+            
+            // Verificar si el ID es unico
+            
+            try
+            {
+                if(storage.get(id) != null)
+                {
+                    return new Response("Location ID already exist.", Status.BAD_REQUEST);
+                }
+            }
+            catch (Exception e)
+            {
+                return new Response("Database does not exist", Status.INTERNAL_SERVER_ERROR);
             }
             
           
@@ -95,8 +107,6 @@ public class AirplaneController {
             {
                 return new Response("All fields must be filled in.", Status.BAD_REQUEST);
             }
-            
-            PlaneStorage storage = PlaneStorage.getInstance();
             
             if (!storage.add(new Plane(id, brand, model, Integer.parseInt(maxCapacity), airline))) {
                 return new Response("A plane with that id already exists", Status.BAD_REQUEST);

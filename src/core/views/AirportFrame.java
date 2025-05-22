@@ -5,6 +5,7 @@
 package core.views;
 
 import core.controllers.AirplaneController;
+import core.controllers.FlightController;
 import core.controllers.LocationController;
 import core.models.flight.Flight;
 import core.models.location.Location;
@@ -15,7 +16,6 @@ import core.controllers.utils.Response;
 import core.models.storage.utils.JsonPath;
 import java.awt.Color;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -582,9 +582,19 @@ public class AirportFrame extends javax.swing.JFrame {
 
         FR_PlaneComboBox.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         FR_PlaneComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Plane" }));
+        FR_PlaneComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FR_PlaneComboBoxActionPerformed(evt);
+            }
+        });
 
         FR_DepartureLocationComboBox.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         FR_DepartureLocationComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Location" }));
+        FR_DepartureLocationComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FR_DepartureLocationComboBoxActionPerformed(evt);
+            }
+        });
 
         jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel24.setText("Departure location:");
@@ -600,6 +610,11 @@ public class AirportFrame extends javax.swing.JFrame {
 
         FR_ScaleLocationComboBox.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         FR_ScaleLocationComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Location" }));
+        FR_ScaleLocationComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FR_ScaleLocationComboBoxActionPerformed(evt);
+            }
+        });
 
         jLabel27.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel27.setText("Duration:");
@@ -1456,7 +1471,7 @@ public class AirportFrame extends javax.swing.JFrame {
         String phone = PR_NumeroTelefonicoTextField.getText();
         String country = PR_PaisTextField.getText();
         
-        Response response = PassengerController.PassengerRegistration(JsonPath.PASSENGERS.getPath(), id, firstname, lastname, year, month, day, phoneCode, phone, country);
+        Response response = PassengerController.PassengerRegistration(id, firstname, lastname, year, month, day, phoneCode, phone, country);
         
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
@@ -1486,7 +1501,7 @@ public class AirportFrame extends javax.swing.JFrame {
         String maxCapacity = AR_MaxCapacityTextField.getText();
         String airline = AR_AirlineTextField.getText();
 
-        Response response = AirplaneController.airplaneRegistration(JsonPath.PLANES.getPath(), id, brand, model, maxCapacity, airline);
+        Response response = AirplaneController.airplaneRegistration(id, brand, model, maxCapacity, airline);
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
         } else if (response.getStatus() >= 400) {
@@ -1512,7 +1527,7 @@ public class AirportFrame extends javax.swing.JFrame {
         String latitude = LR_AirportLatitudeTextField.getText();
         String longitude = LR_AirportLongitudeTextField.getText();
 
-        Response response = LocationController.LocationRegistration(JsonPath.LOCATIONS.getPath(), id, name, city, country, latitude, longitude);
+        Response response = LocationController.LocationRegistration(id, name, city, country, latitude, longitude);
         
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
@@ -1538,47 +1553,53 @@ public class AirportFrame extends javax.swing.JFrame {
         String departureLocationId = FR_DepartureLocationComboBox.getItemAt(FR_DepartureLocationComboBox.getSelectedIndex());
         String arrivalLocationId = FR_ArrivalLocationComboBox.getItemAt(FR_ArrivalLocationComboBox.getSelectedIndex());
         String scaleLocationId = FR_ScaleLocationComboBox.getItemAt(FR_ScaleLocationComboBox.getSelectedIndex());
-        int year = Integer.parseInt(FR_YearTextField.getText());
-        int month = Integer.parseInt(FR_MonthComboBox.getItemAt(FR_MonthComboBox.getSelectedIndex()));
-        int day = Integer.parseInt(FR_DayComboBox.getItemAt(FR_DayComboBox.getSelectedIndex()));
-        int hour = Integer.parseInt(FR_DDHourComboBox.getItemAt(FR_DDHourComboBox.getSelectedIndex()));
-        int minutes = Integer.parseInt(FR_DDMinuteComboBox.getItemAt(FR_DDMinuteComboBox.getSelectedIndex()));
-        int hoursDurationsArrival = Integer.parseInt(FR_D1HourComboBox.getItemAt(FR_D1HourComboBox.getSelectedIndex()));
-        int minutesDurationsArrival = Integer.parseInt(FR_D1MinuteComboBox.getItemAt(FR_D1MinuteComboBox.getSelectedIndex()));
-        int hoursDurationsScale = Integer.parseInt(FR_D2HourComboBox.getItemAt(FR_D2HourComboBox.getSelectedIndex()));
-        int minutesDurationsScale = Integer.parseInt(FR_D2MinuteComboBox.getItemAt(FR_D2MinuteComboBox.getSelectedIndex()));
+        String year = FR_YearTextField.getText();
+        String month = FR_MonthComboBox.getItemAt(FR_MonthComboBox.getSelectedIndex());
+        String day = FR_DayComboBox.getItemAt(FR_DayComboBox.getSelectedIndex());
+        String hour = FR_DDHourComboBox.getItemAt(FR_DDHourComboBox.getSelectedIndex());
+        String minutes = FR_DDMinuteComboBox.getItemAt(FR_DDMinuteComboBox.getSelectedIndex());
+        String hoursDurationsArrival = FR_D1HourComboBox.getItemAt(FR_D1HourComboBox.getSelectedIndex());
+        String minutesDurationsArrival = FR_D1MinuteComboBox.getItemAt(FR_D1MinuteComboBox.getSelectedIndex());
+        String hoursDurationsScale = FR_D2HourComboBox.getItemAt(FR_D2HourComboBox.getSelectedIndex());
+        String minutesDurationsScale = FR_D2MinuteComboBox.getItemAt(FR_D2MinuteComboBox.getSelectedIndex());
 
-        LocalDateTime departureDate = LocalDateTime.of(year, month, day, hour, minutes);
+        if (scaleLocationId.equals("Location"))
+        {
+            Response response = FlightController.FlightRegistration(id, planeId, departureLocationId, arrivalLocationId, null, year, month, day, hour, minutes, hoursDurationsArrival, minutesDurationsArrival, "0", "0");
+            if (response.getStatus() >= 500) {
+                JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+            } else if (response.getStatus() >= 400) {
+                JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
 
-        Plane plane = null;
-        for (Plane p : this.planes) {
-            if (planeId.equals(p.getId())) {
-                plane = p;
+                LR_AirportIdTextField.setText("");
+                LR_AirportNameTextField.setText("");
+                LR_AirportCityTextField.setText("");
+                LR_AirportCountryTextField.setText("");
+                LR_AirportLatitudeTextField.setText("");
+                LR_AirportLongitudeTextField.setText("");
             }
         }
+        
+        else
+        {
+            Response response = FlightController.FlightRegistration(id, planeId, departureLocationId, arrivalLocationId, scaleLocationId, year, month, day, hour, minutes, hoursDurationsArrival, minutesDurationsArrival, hoursDurationsScale, minutesDurationsScale);
+            if (response.getStatus() >= 500) {
+                JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+            } else if (response.getStatus() >= 400) {
+                JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
 
-        Location departure = null;
-        Location arrival = null;
-        Location scale = null;
-        for (Location location : this.locations) {
-            if (departureLocationId.equals(location.getAirportId())) {
-                departure = location;
-            }
-            if (arrivalLocationId.equals(location.getAirportId())) {
-                arrival = location;
-            }
-            if (scaleLocationId.equals(location.getAirportId())) {
-                scale = location;
+                LR_AirportIdTextField.setText("");
+                LR_AirportNameTextField.setText("");
+                LR_AirportCityTextField.setText("");
+                LR_AirportCountryTextField.setText("");
+                LR_AirportLatitudeTextField.setText("");
+                LR_AirportLongitudeTextField.setText("");
             }
         }
-
-        if (scale == null) {
-            this.flights.add(new Flight(id, plane, departure, arrival, departureDate, hoursDurationsArrival, minutesDurationsArrival));
-        } else {
-            this.flights.add(new Flight(id, plane, departure, scale, arrival, departureDate, hoursDurationsArrival, minutesDurationsArrival, hoursDurationsScale, minutesDurationsScale));
-        }
-
-        this.ATF_FlightComboBox.addItem(id);
     }//GEN-LAST:event_FR_CreateButtonActionPerformed
 
     private void UF_UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UF_UpdateActionPerformed
@@ -1727,6 +1748,18 @@ public class AirportFrame extends javax.swing.JFrame {
     private void PR_MonthComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PR_MonthComboBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_PR_MonthComboBoxActionPerformed
+
+    private void FR_PlaneComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FR_PlaneComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FR_PlaneComboBoxActionPerformed
+
+    private void FR_DepartureLocationComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FR_DepartureLocationComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FR_DepartureLocationComboBoxActionPerformed
+
+    private void FR_ScaleLocationComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FR_ScaleLocationComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FR_ScaleLocationComboBoxActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

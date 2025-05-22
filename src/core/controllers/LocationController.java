@@ -4,19 +4,16 @@ import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.location.Location;
 import core.models.storage.LocationStorage;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class LocationController {
     
-    public static Response LocationRegistration(String ruta, String id, String name, String city, String country, String latitud, String longitud)
+    public static Response LocationRegistration(String id, String name, String city, String country, String latitud, String longitud)
     {
         try
         {
             
             float latitudFl, longitudFl;
+            LocationStorage storage = LocationStorage.getInstance();
             
             // Verificar si el ID tiene 3 letras mayusculas
             
@@ -40,7 +37,20 @@ public class LocationController {
             {
                 return new Response("Unexpected error.", Status.INTERNAL_SERVER_ERROR);
             }
-         
+            
+            // Verificar si el ID es unico
+            
+            try
+            {
+                if(storage.get(id) != null)
+                {
+                    return new Response("Location ID already exist.", Status.BAD_REQUEST);
+                }
+            }
+            catch (Exception e)
+            {
+                return new Response("Database does not exist", Status.INTERNAL_SERVER_ERROR);
+            }
             
             // Verificar latitud
             
@@ -117,7 +127,6 @@ public class LocationController {
             
             try{
             
-                LocationStorage storage = LocationStorage.getInstance();
 
                 if (!storage.add(new Location(id, name, city, country, Double.parseDouble(latitud), Double.parseDouble(longitud)))) {
                     return new Response("A location with that id already exists", Status.BAD_REQUEST);
