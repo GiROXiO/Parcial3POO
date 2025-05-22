@@ -5,7 +5,6 @@
 package core.models.storage;
 
 import core.models.location.Location;
-import core.models.plane.Plane;
 import core.models.storage.utils.JsonPath;
 import core.models.storage.utils.JsonStorage;
 import java.util.ArrayList;

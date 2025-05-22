@@ -40,28 +40,7 @@ public class LocationController {
             {
                 return new Response("Unexpected error.", Status.INTERNAL_SERVER_ERROR);
             }
-            
-            // Verificar si el ID es unico
-            
-            try
-            {
-                String contenido = new String(Files.readAllBytes(Paths.get(ruta)));
-                JSONArray locationJson = new JSONArray(contenido);
-                
-                for (int i = 0 ; i < locationJson.length() ; i++)
-                {
-                    JSONObject location = locationJson.getJSONObject(i);
-                    
-                    if(id.equals(location.getString("airportId")))
-                    {
-                        return new Response("The ID already exists", Status.BAD_REQUEST);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                return new Response("Database does not exist", Status.INTERNAL_SERVER_ERROR);
-            }
+         
             
             // Verificar latitud
             
@@ -136,14 +115,23 @@ public class LocationController {
                 return new Response("All fields must be filled in.", Status.BAD_REQUEST);
             }
             
-            LocationStorage storage = LocationStorage.getInstance();
+            try{
             
-            if (!storage.add(new Location(id, name, city, country, Double.parseDouble(latitud), Double.parseDouble(longitud)))) {
-                return new Response("A location with that id already exists", Status.BAD_REQUEST);
+                LocationStorage storage = LocationStorage.getInstance();
+
+                if (!storage.add(new Location(id, name, city, country, Double.parseDouble(latitud), Double.parseDouble(longitud)))) {
+                    return new Response("A location with that id already exists", Status.BAD_REQUEST);
+                }
+                else
+                {
+                    return new Response("Location successfully registered", Status.CREATED);
+                }
+                
             }
-            else
+            
+            catch(Exception e)
             {
-                return new Response("Location successfully registered", Status.CREATED);
+                return new Response("Database does not exist.", Status.INTERNAL_SERVER_ERROR);
             }
         }
         catch(Exception e)

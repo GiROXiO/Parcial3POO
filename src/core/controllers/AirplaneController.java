@@ -15,7 +15,7 @@ public class AirplaneController {
     {
         try
         {
-            // Se verifica si el ID sigue el formato XXXYYY
+            // Se verifica si el ID sigue el formato XXYYYYY
            
             try
             {
@@ -54,27 +54,7 @@ public class AirplaneController {
                 return new Response("ID must follow the XXYYYYY format.", Status.BAD_REQUEST);
             }
             
-            // Se verifica si el ID del avion es unico
-            
-            try
-            {
-                String contenido = new String(Files.readAllBytes(Paths.get(ruta)));
-                JSONArray airplanesJson = new JSONArray(contenido);
-                
-                for (int i = 0 ; i < airplanesJson.length() ; i++)
-                {
-                    JSONObject airplane = airplanesJson.getJSONObject(i);
-                    
-                    if(id.equals(airplane.getString("id")))
-                    {
-                        return new Response("The ID already exists", Status.BAD_REQUEST);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                return new Response("Database does not exist", Status.INTERNAL_SERVER_ERROR);
-            }
+          
             
             // Se verifica si Max Capacity es un valor numérico
             
