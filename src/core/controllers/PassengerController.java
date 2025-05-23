@@ -5,21 +5,16 @@ import core.controllers.utils.Status;
 import core.models.passenger.Passenger;
 import core.models.storage.PassengerStorage;
 import java.time.LocalDate;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.Month;
 
 public class PassengerController {
 
-    public static Response PassengerRegistration(String ruta, String id, String firstName, String lastName, String yearBirthday, String monthBirthday, String dayBirthday, String phoneCode, String phoneNumber, String country)
+    public static Response PassengerRegistration(String id, String firstName, String lastName, String yearBirthday, String monthBirthday, String dayBirthday, String phoneCode, String phoneNumber, String country)
     {
         try
         {
             int idInt, yearInt, monthInt, dayInt, phoneCodeInt, phoneNumberInt;
             LocalDate fecha;
-            
+            PassengerStorage storage = PassengerStorage.getInstance();
             // Verifica si el ID tiene entre 1 y 15 digitos
              
             try
@@ -38,20 +33,11 @@ public class PassengerController {
             
             // Verifica si el ID ya existe
             
-            try
+           try
             {
-                idInt = Integer.parseInt(id);
-                String contenido = new String(Files.readAllBytes(Paths.get(ruta)));
-                JSONArray passengersJson = new JSONArray(contenido);
-                
-                for (int i = 0 ; i < passengersJson.length() ; i++)
+                if(storage.get(id) != null)
                 {
-                    JSONObject passenger = passengersJson.getJSONObject(i);
-                    
-                    if(idInt == passenger.getInt("id"))
-                    {
-                        return new Response("The ID already exists", Status.BAD_REQUEST);
-                    }
+                    return new Response("ID already exist.", Status.BAD_REQUEST);
                 }
             }
             catch (Exception e)
@@ -66,10 +52,13 @@ public class PassengerController {
             {    
                 
                 yearInt = Integer.parseInt(yearBirthday);
+                monthInt = Integer.parseInt(monthBirthday);
+                dayInt = Integer.parseInt(dayBirthday);
                 
+                LocalDate fechaBirthday = LocalDate.of(yearInt, monthInt, dayInt);
                 // Verifica si la persona no tiene más de 125 años (la persona más vieja del mundo vivio 122 años), no se si quitar esto la vd
                 
-                if (LocalDate.now().getYear() - yearInt > 125 | yearInt > LocalDate.now().getYear())
+                if (LocalDate.now().getYear() - yearInt > 125 | fechaBirthday.isAfter(LocalDate.now()))
                 {
                     return new Response("The year of birth must be valid", Status.BAD_REQUEST);
                 }
@@ -160,7 +149,6 @@ public class PassengerController {
             dayInt = Integer.parseInt(dayBirthday);
             fecha = LocalDate.of(yearInt, monthInt, dayInt);
             
-            PassengerStorage storage = PassengerStorage.getInstance();
             
             if (!storage.add(new Passenger(Long.parseLong(id), firstName, lastName, fecha, Integer.parseInt(phoneCode), Long.parseLong(phoneNumber), country))) {
                 return new Response("A passenger with that id already exists", Status.BAD_REQUEST);

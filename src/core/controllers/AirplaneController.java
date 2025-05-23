@@ -4,18 +4,16 @@ import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.plane.Plane;
 import core.models.storage.PlaneStorage;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class AirplaneController {
     
-    public static Response airplaneRegistration(String ruta, String id, String brand, String model, String maxCapacity, String airline)
+    public static Response airplaneRegistration(String id, String brand, String model, String maxCapacity, String airline)
     {
         try
         {
-            // Se verifica si el ID sigue el formato XXXYYY
+            PlaneStorage storage = PlaneStorage.getInstance();
+            
+            // Se verifica si el ID sigue el formato XXYYYYY
            
             try
             {
@@ -54,27 +52,21 @@ public class AirplaneController {
                 return new Response("ID must follow the XXYYYYY format.", Status.BAD_REQUEST);
             }
             
-            // Se verifica si el ID del avion es unico
+            // Verificar si el ID es unico
             
             try
             {
-                String contenido = new String(Files.readAllBytes(Paths.get(ruta)));
-                JSONArray airplanesJson = new JSONArray(contenido);
-                
-                for (int i = 0 ; i < airplanesJson.length() ; i++)
+                if(storage.get(id) != null)
                 {
-                    JSONObject airplane = airplanesJson.getJSONObject(i);
-                    
-                    if(id.equals(airplane.getString("id")))
-                    {
-                        return new Response("The ID already exists", Status.BAD_REQUEST);
-                    }
+                    return new Response("Location ID already exist.", Status.BAD_REQUEST);
                 }
             }
             catch (Exception e)
             {
                 return new Response("Database does not exist", Status.INTERNAL_SERVER_ERROR);
             }
+            
+          
             
             // Se verifica si Max Capacity es un valor numérico
             
@@ -115,8 +107,6 @@ public class AirplaneController {
             {
                 return new Response("All fields must be filled in.", Status.BAD_REQUEST);
             }
-            
-            PlaneStorage storage = PlaneStorage.getInstance();
             
             if (!storage.add(new Plane(id, brand, model, Integer.parseInt(maxCapacity), airline))) {
                 return new Response("A plane with that id already exists", Status.BAD_REQUEST);

@@ -4,19 +4,16 @@ import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.location.Location;
 import core.models.storage.LocationStorage;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class LocationController {
     
-    public static Response LocationRegistration(String ruta, String id, String name, String city, String country, String latitud, String longitud)
+    public static Response LocationRegistration(String id, String name, String city, String country, String latitud, String longitud)
     {
         try
         {
             
             float latitudFl, longitudFl;
+            LocationStorage storage = LocationStorage.getInstance();
             
             // Verificar si el ID tiene 3 letras mayusculas
             
@@ -45,17 +42,9 @@ public class LocationController {
             
             try
             {
-                String contenido = new String(Files.readAllBytes(Paths.get(ruta)));
-                JSONArray locationJson = new JSONArray(contenido);
-                
-                for (int i = 0 ; i < locationJson.length() ; i++)
+                if(storage.get(id) != null)
                 {
-                    JSONObject location = locationJson.getJSONObject(i);
-                    
-                    if(id.equals(location.getString("airportId")))
-                    {
-                        return new Response("The ID already exists", Status.BAD_REQUEST);
-                    }
+                    return new Response("Location ID already exist.", Status.BAD_REQUEST);
                 }
             }
             catch (Exception e)
@@ -136,14 +125,22 @@ public class LocationController {
                 return new Response("All fields must be filled in.", Status.BAD_REQUEST);
             }
             
-            LocationStorage storage = LocationStorage.getInstance();
+            try{
             
-            if (!storage.add(new Location(id, name, city, country, Double.parseDouble(latitud), Double.parseDouble(longitud)))) {
-                return new Response("A location with that id already exists", Status.BAD_REQUEST);
+
+                if (!storage.add(new Location(id, name, city, country, Double.parseDouble(latitud), Double.parseDouble(longitud)))) {
+                    return new Response("A location with that id already exists", Status.BAD_REQUEST);
+                }
+                else
+                {
+                    return new Response("Location successfully registered", Status.CREATED);
+                }
+                
             }
-            else
+            
+            catch(Exception e)
             {
-                return new Response("Location successfully registered", Status.CREATED);
+                return new Response("Database does not exist.", Status.INTERNAL_SERVER_ERROR);
             }
         }
         catch(Exception e)
