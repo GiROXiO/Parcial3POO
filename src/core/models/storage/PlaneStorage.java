@@ -9,6 +9,7 @@ import core.models.storage.utils.JsonPath;
 import core.models.storage.utils.JsonStorage;
 import java.util.ArrayList;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class PlaneStorage extends Storage<Plane>{
@@ -48,17 +49,24 @@ public class PlaneStorage extends Storage<Plane>{
     public boolean del(int id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
-    public void pruebaJsonStorage(){
-        JSONArray array = JsonStorage.readJson(path);
-        for (int i = 0; i < array.length();i++) {
-            JSONObject obj = array.getJSONObject(i);
-            String id = obj.getString("id");
-            this.prueba.add(id);
-        }
-        
-        for(String num : this.prueba){
-            System.out.println(num);
+
+    @Override
+    public boolean load() {
+        try {
+            JSONArray array = JsonStorage.readJson(path);
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject obj = array.getJSONObject(i);
+                String id = obj.getString("id");
+                String brand = obj.getString("brand");
+                String model = obj.getString("model");
+                int maxCapacity = obj.getInt("maxCapacity");
+                String airline = obj.getString("airline");
+                Plane plane = new Plane(id, brand, model, maxCapacity, airline);           
+                this.add(plane);
+            }
+            return true;
+        } catch (JSONException | NumberFormatException e) {
+            return false;
         }
     }
 }

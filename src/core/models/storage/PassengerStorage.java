@@ -7,8 +7,10 @@ package core.models.storage;
 import core.models.passenger.Passenger;
 import core.models.storage.utils.JsonPath;
 import core.models.storage.utils.JsonStorage;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -50,17 +52,27 @@ public class PassengerStorage extends Storage<Passenger>{
     public boolean del(int id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
-    public void pruebaJsonStorage(){
-        JSONArray array = JsonStorage.readJson(path);
-        for (int i = 0; i < array.length();i++) {
-            JSONObject obj = array.getJSONObject(i);
-            String id = obj.getString("id");
-            this.prueba.add(id);
-        }
-        
-        for(String num : this.prueba){
-            System.out.println(num);
+
+    @Override
+    public boolean load() {
+        try {
+            JSONArray array = JsonStorage.readJson(path);
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject obj = array.getJSONObject(i);
+                long id = obj.getLong("id");
+                String firstname = obj.getString("firstname");
+                String lastname = obj.getString("lastname");
+                LocalDate birthDate = LocalDate.parse(obj.getString("birthDate"));
+                int countryPhoneCode = obj.getInt("countryPhoneCode");
+                long phone = obj.getLong("phone");
+                String country = obj.getString("country");
+                Passenger passenger = new Passenger(id, firstname, lastname, birthDate, countryPhoneCode, phone, country);
+                this.add(passenger);
+            }
+            return true;
+        } catch (JSONException | NumberFormatException e) {
+            System.out.println("Error: "+e);
+            return false;
         }
     }
     

@@ -6,6 +6,9 @@ package main;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import core.models.storage.FlightStorage;
+import core.models.storage.LocationStorage;
+import core.models.storage.PassengerStorage;
+import core.models.storage.PlaneStorage;
 import core.models.storage.utils.JsonStorage;
 import core.views.AirportFrame;
 import javax.swing.UIManager;
@@ -22,7 +25,10 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        FlightStorage.getInstance().pruebaJsonStorage();
+        System.out.println("LocationStorage: "+LocationStorage.getInstance().load());
+        System.out.println("PlaneStorage: "+PlaneStorage.getInstance().load());
+        System.out.println("PassengerStorage: "+PassengerStorage.getInstance().load());
+        System.out.println("FlightStorage: "+FlightStorage.getInstance().load());
 
         System.setProperty("flatlaf.useNativeLibrary", "false");
 

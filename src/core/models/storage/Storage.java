@@ -23,5 +23,5 @@ public abstract class Storage<T>{
     public abstract boolean add(T obj);
     public abstract T get(String id);
     public abstract boolean del(int id);
-    
+    public abstract boolean load();
 }
