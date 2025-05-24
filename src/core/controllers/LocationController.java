@@ -48,7 +48,7 @@ public class LocationController {
                     return new Response("Latitude must have a maximum of 4 decimal places.", Status.BAD_REQUEST);
                 }
 
-                if (latitudFl < -90.0 | latitudFl > 90.0) {
+                if (latitudFl < -90.0 || latitudFl > 90.0) {
                     return new Response("Valid latitudes are in the range [-90, 90].", Status.BAD_REQUEST);
                 }
 
@@ -66,7 +66,7 @@ public class LocationController {
                     return new Response("Longitude must have a maximum of 4 decimal places.", Status.BAD_REQUEST);
                 }
 
-                if (longitudFl < -180.0 | longitudFl > 180.0) {
+                if (longitudFl < -180.0 || longitudFl > 180.0) {
                     return new Response("Valid Longitudes are in the range [-180, 180].", Status.BAD_REQUEST);
                 }
 

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class PassengerController {
 
-    public static Response PassengerRegistration(String id, String firstName, String lastName, String yearBirthday, String monthBirthday, String dayBirthday, String phoneCode, String phoneNumber, String country)
+    public static Response PassengerRegistration(String id, String firstName, String lastName, String yearBirthday, String monthBirthday, String dayBirthday, String phoneCode, String phoneNumber, String country, boolean register)
     {
         try
         {
@@ -24,7 +24,7 @@ public class PassengerController {
             {
                 idL = Long.parseLong(id.trim());
                 
-                if (idL < 0 | String.valueOf(idL).length() > 15)
+                if (idL < 0 || String.valueOf(idL).length() > 15)
                 {
                     return new Response("ID must be between 1 to 15 digits.", Status.BAD_REQUEST);
                 }
@@ -49,7 +49,7 @@ public class PassengerController {
             }
             
             
-            // Verifica si el año de nacimiento es numérico
+            // Comprueba si la fecha es valida
             
             try
             {    
@@ -58,10 +58,11 @@ public class PassengerController {
                 monthInt = Integer.parseInt(monthBirthday);
                 dayInt = Integer.parseInt(dayBirthday);
                 
-                LocalDate fechaBirthday = LocalDate.of(yearInt, monthInt, dayInt);
-                // Verifica si la persona no tiene más de 125 años (la persona más vieja del mundo vivio 122 años), no se si quitar esto la vd
+                fecha = LocalDate.of(yearInt, monthInt, dayInt);
                 
-                if (LocalDate.now().getYear() - yearInt > 125 | fechaBirthday.isAfter(LocalDate.now()))
+                // Verifica si la persona no tiene más de 125 años (la persona más vieja del mundo vivio 122 años)
+           
+                if (LocalDate.now().getYear() - yearInt > 125 || fecha.isAfter(LocalDate.now()))
                 {
                     return new Response("The year of birth must be valid", Status.BAD_REQUEST);
                 }
@@ -69,23 +70,7 @@ public class PassengerController {
             }
             catch(Exception e)
             {
-                return new Response("The date of birth must be valid", Status.BAD_REQUEST);
-            }
-            
-            
-            // Comprueba si la fecha es valida
-            
-            try
-            {
-                yearInt = Integer.parseInt(yearBirthday);
-                monthInt = Integer.parseInt(monthBirthday);
-                dayInt = Integer.parseInt(dayBirthday);
-                
-                fecha = LocalDate.of(yearInt, monthInt, dayInt);
-            }
-            catch(Exception e)
-            {
-                return new Response("Date of Birth must be valid", Status.BAD_REQUEST);
+                return new Response("Date of birth must be valid", Status.BAD_REQUEST);
             }
             
             
@@ -94,7 +79,7 @@ public class PassengerController {
             try
             {
                 phoneCodeInt = Integer.parseInt(phoneCode.trim());
-                if (phoneCodeInt < 0 | phoneCodeInt >= 1000)
+                if (phoneCodeInt < 0 || phoneCodeInt >= 1000)
                 {
                     return new Response("Phone code must be between 1 and 3 digits.", Status.BAD_REQUEST);
                 }
@@ -110,7 +95,7 @@ public class PassengerController {
             try
             {
                 phoneNumberL = Long.parseLong(phoneNumber);
-                if (phoneNumberL < 0 | String.valueOf(phoneNumberL).length() > 11)
+                if (phoneNumberL < 0 || phoneNumber.trim().length() > 11)
                 {
                     return new Response("Phone number must be between 1 and 11 digits.", Status.BAD_REQUEST);
                 }
@@ -122,46 +107,40 @@ public class PassengerController {
             
             
             // Comprueba si el campo de los paises fue llenado
-            
-            try
+        
+            if (firstName.isBlank())
             {
-                
-                if (String.valueOf(firstName).isBlank())
-                {
-                    return new Response("The first name field must be filled in", Status.BAD_REQUEST);
-                }
-                
-                if (String.valueOf(lastName).isBlank())
-                {
-                    return new Response("The last name field must be filled in", Status.BAD_REQUEST);
-                }
-                
-                if (String.valueOf(country).isBlank())
-                {
-                    return new Response("The country field must be filled in", Status.BAD_REQUEST);
-                }
+                return new Response("The first name field must be filled in", Status.BAD_REQUEST);
             }
-         
-            catch(Exception e)
+
+            if (lastName.isBlank())
             {
-                return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
+                return new Response("The last name field must be filled in", Status.BAD_REQUEST);
+            }
+
+            if (country.isBlank())
+            {
+                return new Response("The country field must be filled in", Status.BAD_REQUEST);
             }
             
-            yearInt = Integer.parseInt(yearBirthday);
-            monthInt = Integer.parseInt(monthBirthday);
-            dayInt = Integer.parseInt(dayBirthday);
-            fecha = LocalDate.of(yearInt, monthInt, dayInt);
-            
-            
-            if (!storage.add(new Passenger(Long.parseLong(id), firstName, lastName, fecha, Integer.parseInt(phoneCode), Long.parseLong(phoneNumber), country))) {
-                return new Response("A passenger with that id already exists", Status.BAD_REQUEST);
+            if (register)
+            {
+                if (!storage.add(new Passenger(Long.parseLong(id), firstName, lastName, fecha, Integer.parseInt(phoneCode), Long.parseLong(phoneNumber), country))) 
+                {
+                    return new Response("A passenger with that id already exists", Status.BAD_REQUEST);
+                }
+                else
+                {
+                    return new Response("Passenger successfully registered", Status.CREATED);
+                }
             }
             else
             {
-                return new Response("Passenger successfully registered", Status.CREATED);
+                return null;
+                // aca meteria el codigo para modificar su info
             }
         }
-        catch(NumberFormatException e)
+        catch(Exception e)
         {
             return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }

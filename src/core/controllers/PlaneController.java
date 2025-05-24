@@ -11,7 +11,7 @@ public class PlaneController {
     public static Response planeRegistration(String id, String brand, String model, String maxCapacity, String airline) {
         try {
             PlaneStorage storage = PlaneStorage.getInstance();
-
+            int maxCapacityInt;
             // Se verifica si el ID sigue el formato XXYYYYY
             try {
 
@@ -42,46 +42,44 @@ public class PlaneController {
             // Verificar si el ID es unico
             try {
                 if (storage.get(id) != null) {
-                    return new Response("Location ID already exist.", Status.BAD_REQUEST);
+                    return new Response("Plane ID already exist.", Status.BAD_REQUEST);
                 }
             } catch (Exception e) {
                 return new Response("Database does not exist", Status.INTERNAL_SERVER_ERROR);
             }
 
+            // Se verifica si los demás campos no estan vacios
+          
+            if (brand.isBlank()) {
+                return new Response("Brand field must be filled in.", Status.BAD_REQUEST);
+            }
+
+            if (model.isBlank()) {
+                return new Response("Model field must be filled in.", Status.BAD_REQUEST);
+            }
+
+            if (maxCapacity.isBlank()) {
+                return new Response("Max capacity field must be filled in.", Status.BAD_REQUEST);
+            }
+
+            if (airline.isBlank()) {
+                return new Response("Airline field must be filled in.", Status.BAD_REQUEST);
+            }
+             
+            
             // Se verifica si Max Capacity es un valor numérico
             try {
-                int verfInt = Integer.parseInt(maxCapacity);
+                maxCapacityInt = Integer.parseInt(maxCapacity);
             } catch (NumberFormatException e) {
                 return new Response("Max capacity must be a integer.", Status.BAD_REQUEST);
             }
 
-            // Se verifica si los demás campos no estan vacios
-            try {
-                if (brand.isBlank()) {
-                    return new Response("Brand field must be filled in.", Status.BAD_REQUEST);
-                }
-
-                if (model.isBlank()) {
-                    return new Response("Model field must be filled in.", Status.BAD_REQUEST);
-                }
-
-                if (maxCapacity.isBlank()) {
-                    return new Response("Max capacity field must be filled in.", Status.BAD_REQUEST);
-                }
-
-                if (airline.isBlank()) {
-                    return new Response("Airline field must be filled in.", Status.BAD_REQUEST);
-                }
-            } catch (Exception e) {
-                return new Response("All fields must be filled in.", Status.BAD_REQUEST);
-            }
-
-            if (!storage.add(new Plane(id, brand, model, Integer.parseInt(maxCapacity), airline))) {
+            if (!storage.add(new Plane(id, brand, model, maxCapacityInt, airline))) {
                 return new Response("A plane with that id already exists", Status.BAD_REQUEST);
             } else {
                 return new Response("Plane successfully registered", Status.CREATED);
             }
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             return new Response("Unexpected error.", Status.INTERNAL_SERVER_ERROR);
         }
 

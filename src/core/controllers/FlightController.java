@@ -83,7 +83,7 @@ public class FlightController {
             try {
                 if (scaleID != null) {
                     if (locationStorage.get(scaleID) == null) {
-                        return new Response("Departure location ID does not exist.", Status.BAD_REQUEST);
+                        return new Response("Scale location ID does not exist.", Status.BAD_REQUEST);
                     }
                 }
             } catch (Exception e) {
@@ -108,8 +108,8 @@ public class FlightController {
 
                 LocalDateTime fecha = LocalDateTime.of(yearInt, monthInt, dayInt, hourInt, minuteInt);
 
-                if (fecha.isAfter(LocalDateTime.now())) {
-                    return new Response("Departure date is not valid. The date cannot be greater than the current date.", Status.BAD_REQUEST);
+                if (fecha.isBefore(LocalDateTime.now())) {
+                    return new Response("Departure date is not valid. The departure date cannot be earlier than the current date.", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException e) {
                 return new Response("Departure date is not valid.", Status.BAD_REQUEST);
@@ -117,12 +117,12 @@ public class FlightController {
 
             // Validando la duración del vuelo
             try {
-                hourInt = Integer.parseInt(hourDuration);
-                minuteInt = Integer.parseInt(minuteDuration);
+                hourDurationInt = Integer.parseInt(hourDuration);
+                minuteDurationInt = Integer.parseInt(minuteDuration);
 
-                LocalTime duracion = LocalTime.of(hourInt, minuteInt);
+                LocalTime duracion = LocalTime.of(hourDurationInt, minuteDurationInt);
 
-                if (hourInt <= 0 & minuteInt <= 0) {
+                if (hourDurationInt <= 0 && minuteDurationInt <= 0) {
                     return new Response("Invalid flight duration. The duration has to be longer than 00:00", Status.BAD_REQUEST);
                 }
             } catch (NumberFormatException e) {
@@ -132,26 +132,18 @@ public class FlightController {
             // Validando la duración del scale si es que existe
             try {
                 if (scaleID != null) {
-                    hourInt = Integer.parseInt(hourScale);
-                    minuteInt = Integer.parseInt(minuteScale);
+                    hourScaleInt = Integer.parseInt(hourScale);
+                    minuteScaleInt = Integer.parseInt(minuteScale);
 
-                    LocalTime duracion = LocalTime.of(hourInt, minuteInt);
+                    LocalTime duracion = LocalTime.of(hourScaleInt, minuteScaleInt);
 
-                    if (hourInt <= 0 & minuteInt <= 0) {
+                    if (hourScaleInt <= 0 && minuteScaleInt <= 0) {
                         return new Response("Invalid scale duration. The duration has to be longer than 00:00", Status.BAD_REQUEST);
                     }
                 }
             } catch (NumberFormatException e) {
                 return new Response("Invalid scale duration.", Status.BAD_REQUEST);
             }
-
-            yearInt = Integer.parseInt(departureYear);
-            monthInt = Integer.parseInt(departureMonth);
-            dayInt = Integer.parseInt(departureDay);
-            hourInt = Integer.parseInt(departureHour);
-            minuteInt = Integer.parseInt(departureMinute);
-            hourDurationInt = Integer.parseInt(hourDuration);
-            minuteDurationInt = Integer.parseInt(hourDuration);
 
             Plane plane = planeStorage.get(planeID);
             Location departureLocation = locationStorage.get(salidaID);
@@ -177,7 +169,7 @@ public class FlightController {
                 }
             }
 
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             return new Response("Unexpected error.", Status.INTERNAL_SERVER_ERROR);
         }
     }
@@ -281,4 +273,6 @@ public class FlightController {
             return new Response("Error interno obteniendo el vuelo", Status.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    
 }
