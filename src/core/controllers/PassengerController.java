@@ -5,6 +5,7 @@ import core.controllers.utils.Status;
 import core.models.passenger.Passenger;
 import core.models.storage.PassengerStorage;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class PassengerController {
 
@@ -158,11 +159,43 @@ public class PassengerController {
                 return new Response("Passenger successfully registered", Status.CREATED);
             }
         }
-        catch(Exception e)
+        catch(NumberFormatException e)
         {
             return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }
         
     }
     
+    public static Response getPassengers(){
+        try {
+            boolean sw = PassengerStorage.getInstance().load();
+
+            if (!sw) {
+                return new Response("Error cargando los vuelos", Status.INTERNAL_SERVER_ERROR);
+            }
+
+            ArrayList<Passenger> lista = PassengerStorage.getInstance().getLista();
+            ArrayList<Passenger> copia = new ArrayList<>();
+
+            for (Passenger passenger : lista) {
+                copia.add(passenger.clone());
+            }
+
+            return new Response("Pasajeros cargados correctamente", Status.OK, copia);
+        } catch (CloneNotSupportedException e) {
+            return new Response("Error interno obteniendo los pasajeros", Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public static Response getPassengerId(Object obj){
+        try {
+            if (!(obj instanceof Passenger)) {
+                return new Response("El id no corresponde al de un pasajero", Status.BAD_REQUEST);
+            }
+            String id = String.valueOf(((Passenger)obj).clone().getId());
+            return new Response("Id del vuelo obtenido exitosamente", Status.OK, id);
+        } catch (CloneNotSupportedException e) {
+            return new Response("Error interno obteniendo el ID del vuelo", Status.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

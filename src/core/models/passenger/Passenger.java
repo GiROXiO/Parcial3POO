@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author edangulo
  */
-public class Passenger {
+public class Passenger implements Cloneable{
     
     private final long id;
     private String firstname;
@@ -111,4 +111,13 @@ public class Passenger {
         return flights.size();
     }
     
+    @Override
+    public Passenger clone() throws CloneNotSupportedException{
+        return (Passenger) super.clone();
+    }
+
+    @Override
+    public String toString() {
+        return "Passenger{" + "id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", birthDate=" + birthDate + ", countryPhoneCode=" + countryPhoneCode + ", phone=" + phone + ", country=" + country + '}';
+    }
 }

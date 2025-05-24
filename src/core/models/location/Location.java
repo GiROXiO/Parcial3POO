@@ -8,7 +8,7 @@ package core.models.location;
  *
  * @author edangulo
  */
-public class Location {
+public class Location implements Cloneable{
     
     private final String airportId;
     private String airportName;
@@ -50,4 +50,13 @@ public class Location {
         return airportLongitude;
     }
     
+    @Override
+    public Location clone() throws CloneNotSupportedException{
+        return (Location) super.clone();
+    }
+
+    @Override
+    public String toString() {
+        return "Location{" + "airportId=" + airportId + ", airportName=" + airportName + ", airportCity=" + airportCity + ", airportCountry=" + airportCountry + ", airportLatitude=" + airportLatitude + ", airportLongitude=" + airportLongitude + '}';
+    }
 }

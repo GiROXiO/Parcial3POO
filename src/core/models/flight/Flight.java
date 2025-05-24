@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author edangulo
  */
-public class Flight {
+public class Flight implements Cloneable{
     
     private final String id;
     private ArrayList<Passenger> passengers;
@@ -125,4 +125,13 @@ public class Flight {
         return passengers.size();
     }
     
+    @Override
+    public Flight clone() throws CloneNotSupportedException{
+        return (Flight) super.clone();
+    }
+
+    @Override
+    public String toString() {
+        return "Flight{" + "id=" + id + ", passengers=" + passengers + ", plane=" + plane + ", departureLocation=" + departureLocation + ", scaleLocation=" + scaleLocation + ", arrivalLocation=" + arrivalLocation + ", departureDate=" + departureDate + ", hoursDurationArrival=" + hoursDurationArrival + ", minutesDurationArrival=" + minutesDurationArrival + ", hoursDurationScale=" + hoursDurationScale + ", minutesDurationScale=" + minutesDurationScale + '}';
+    }
 }

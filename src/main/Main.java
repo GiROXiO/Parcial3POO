@@ -5,12 +5,15 @@
 package main;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import core.controllers.LocationController;
+import core.controllers.utils.Response;
 import core.models.storage.FlightStorage;
 import core.models.storage.LocationStorage;
 import core.models.storage.PassengerStorage;
 import core.models.storage.PlaneStorage;
 import core.models.storage.utils.JsonStorage;
 import core.views.AirportFrame;
+import java.util.ArrayList;
 import javax.swing.UIManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,12 +27,7 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        System.out.println("LocationStorage: "+LocationStorage.getInstance().load());
-        System.out.println("PlaneStorage: "+PlaneStorage.getInstance().load());
-        System.out.println("PassengerStorage: "+PassengerStorage.getInstance().load());
-        System.out.println("FlightStorage: "+FlightStorage.getInstance().load());
-
+    public static void main(String args[]){
         System.setProperty("flatlaf.useNativeLibrary", "false");
 
         try {
