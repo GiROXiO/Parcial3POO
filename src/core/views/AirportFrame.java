@@ -12,6 +12,7 @@ import core.controllers.utils.Response;
 import java.awt.Color;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -42,6 +43,10 @@ public class AirportFrame extends javax.swing.JFrame {
         this.generatePlanes();
         this.generateFlights();
         this.generatePassengers();
+        this.showAllFlights();
+        this.showAllPassengers();
+        this.showAllPlanes();
+        this.showAllLocations();
         this.blockPanels();
     }
 
@@ -94,6 +99,8 @@ public class AirportFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
         } else if (response.getStatus() >= 400) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else if (response.getStatus() == 204) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
         } else {
             ArrayList<Object> lista = (ArrayList<Object>) response.getObject();
             for (Object obj : lista) {
@@ -120,6 +127,8 @@ public class AirportFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
         } else if (response.getStatus() >= 400) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else if (response.getStatus() == 204) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
         } else {
             ArrayList<Object> lista = (ArrayList<Object>) response.getObject();
             for (Object obj : lista) {
@@ -144,6 +153,8 @@ public class AirportFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
         } else if (response.getStatus() >= 400) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else if (response.getStatus() == 204) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
         } else {
             ArrayList<Object> lista = (ArrayList<Object>) response.getObject();
             for (Object obj : lista) {
@@ -169,6 +180,8 @@ public class AirportFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
         } else if (response.getStatus() >= 400) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else if (response.getStatus() == 204) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
         } else {
             ArrayList<Object> lista = (ArrayList<Object>) response.getObject();
             for (Object obj : lista) {
@@ -182,6 +195,153 @@ public class AirportFrame extends javax.swing.JFrame {
                 }
             }
             JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    private void showAllFlights() {
+        DefaultTableModel model = (DefaultTableModel) SAFlights_Table.getModel();
+        model.setRowCount(0);
+        Response response = FlightController.getFlights();
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else if (response.getStatus() == 204) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            ArrayList<Object> lista = (ArrayList<Object>) response.getObject();
+            for (Object obj : lista) {
+                Response flight = FlightController.getFlightRow(obj);
+                if (flight.getStatus() >= 500) {
+                    JOptionPane.showMessageDialog(null, flight.getMessage(), "Error " + flight.getStatus(), JOptionPane.ERROR_MESSAGE);
+                    return;
+                } else if (flight.getStatus() >= 400) {
+                    JOptionPane.showMessageDialog(null, flight.getMessage(), "Error " + flight.getStatus(), JOptionPane.WARNING_MESSAGE);
+                    return;
+                } else {
+                    Object[] row = (Object[]) flight.getObject();
+                    model.addRow(row);
+                }
+            }
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    private void showAllPassengers() {
+        DefaultTableModel model = (DefaultTableModel) SAPassengers_Table.getModel();
+        model.setRowCount(0);
+        Response response = PassengerController.getPassengers();
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else if (response.getStatus() == 204) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            ArrayList<Object> lista = (ArrayList<Object>) response.getObject();
+            for (Object obj : lista) {
+                Response passenger = PassengerController.getPassengerRow(obj);
+                if (passenger.getStatus() >= 500) {
+                    JOptionPane.showMessageDialog(null, passenger.getMessage(), "Error " + passenger.getStatus(), JOptionPane.ERROR_MESSAGE);
+                    return;
+                } else if (passenger.getStatus() >= 400) {
+                    JOptionPane.showMessageDialog(null, passenger.getMessage(), "Error " + passenger.getStatus(), JOptionPane.WARNING_MESSAGE);
+                    return;
+                } else {
+                    Object[] row = (Object[]) passenger.getObject();
+                    model.addRow(row);
+                }
+            }
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    private void showAllPlanes() {
+        DefaultTableModel model = (DefaultTableModel) SAPlanes_Table.getModel();
+        model.setRowCount(0);
+        Response response = PlaneController.getPlanes();
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else if (response.getStatus() == 204) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            ArrayList<Object> lista = (ArrayList<Object>) response.getObject();
+            for (Object obj : lista) {
+                Response plane = PlaneController.getPlaneRow(obj);
+                if (plane.getStatus() >= 500) {
+                    JOptionPane.showMessageDialog(null, plane.getMessage(), "Error " + plane.getStatus(), JOptionPane.ERROR_MESSAGE);
+                    return;
+                } else if (plane.getStatus() >= 400) {
+                    JOptionPane.showMessageDialog(null, plane.getMessage(), "Error " + plane.getStatus(), JOptionPane.WARNING_MESSAGE);
+                    return;
+                } else {
+                    Object[] row = (Object[]) plane.getObject();
+                    model.addRow(row);
+                }
+            }
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    private void showAllLocations() {
+        DefaultTableModel model = (DefaultTableModel) SALocations_Table.getModel();
+        model.setRowCount(0);
+        Response response = LocationController.getLocations();
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else if (response.getStatus() == 204) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            ArrayList<Object> lista = (ArrayList<Object>) response.getObject();
+            for (Object obj : lista) {
+                Response location = LocationController.getLocationRow(obj);
+                if (location.getStatus() >= 500) {
+                    JOptionPane.showMessageDialog(null, location.getMessage(), "Error " + location.getStatus(), JOptionPane.ERROR_MESSAGE);
+                    return;
+                } else if (location.getStatus() >= 400) {
+                    JOptionPane.showMessageDialog(null, location.getMessage(), "Error " + location.getStatus(), JOptionPane.WARNING_MESSAGE);
+                    return;
+                } else {
+                    Object[] row = (Object[]) location.getObject();
+                    model.addRow(row);
+                }
+            }
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    private void showPassengerFlights(String passengerId) {
+        DefaultTableModel model = (DefaultTableModel) SMFlights_Table.getModel();
+        model.setRowCount(0);
+        Long id = Long.valueOf(passengerId);
+        Response response = PassengerController.getPassengerFlights(id);
+        System.out.println(response.getStatus());
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else if (response.getStatus() == 204) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            ArrayList<Object> lista = (ArrayList<Object>) response.getObject();
+            for (Object obj : lista) {
+                Response flight = FlightController.getPassengerFlightRow(obj);
+                if (flight.getStatus() >= 500) {
+                    JOptionPane.showMessageDialog(null, flight.getMessage(), "Error " + flight.getStatus(), JOptionPane.ERROR_MESSAGE);
+                    return;
+                } else if (flight.getStatus() >= 400) {
+                    JOptionPane.showMessageDialog(null, flight.getMessage(), "Error " + flight.getStatus(), JOptionPane.WARNING_MESSAGE);
+                    return;
+                } else {
+                    Object[] row = (Object[]) flight.getObject();
+                    model.addRow(row);
+                    JOptionPane.showMessageDialog(null, flight.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
         }
     }
 
@@ -922,6 +1082,11 @@ public class AirportFrame extends javax.swing.JFrame {
         UI_IdTextField.setEditable(false);
         UI_IdTextField.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         UI_IdTextField.setEnabled(false);
+        UI_IdTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UI_IdTextFieldActionPerformed(evt);
+            }
+        });
 
         jLabel37.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
         jLabel37.setText("First Name:");
@@ -1730,39 +1895,33 @@ public class AirportFrame extends javax.swing.JFrame {
 
     private void SMFlights_RefreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SMFlights_RefreshButtonActionPerformed
         // TODO add your handling code here:
-        long passengerId = Long.parseLong(userSelect.getItemAt(userSelect.getSelectedIndex()));
-
-        DefaultTableModel model = (DefaultTableModel) SMFlights_Table.getModel();
-        model.setRowCount(0);
-
+        try {
+            String id = userSelect.getSelectedItem().toString();
+            if (!id.equals(userSelect.getItemAt(0))) {
+                this.showPassengerFlights(id);
+            }
+        } catch (Exception e) {
+        }
     }//GEN-LAST:event_SMFlights_RefreshButtonActionPerformed
 
     private void SMPassengers_RefreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SMPassengers_RefreshButtonActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) SAPassengers_Table.getModel();
-        model.setRowCount(0);
-
+        this.showAllPassengers();
     }//GEN-LAST:event_SMPassengers_RefreshButtonActionPerformed
 
     private void SAFlights_RefreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SAFlights_RefreshButtonActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) SAFlights_Table.getModel();
-        model.setRowCount(0);
-
+        this.showAllFlights();
     }//GEN-LAST:event_SAFlights_RefreshButtonActionPerformed
 
     private void SAPlanes_RefreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SAPlanes_RefreshButtonActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) SAPlanes_Table.getModel();
-        model.setRowCount(0);
-
+        this.showAllPlanes();
     }//GEN-LAST:event_SAPlanes_RefreshButtonActionPerformed
 
     private void SALocations_RefreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SALocations_RefreshButtonActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) SALocations_Table.getModel();
-        model.setRowCount(0);
-
+        this.showAllLocations();
     }//GEN-LAST:event_SALocations_RefreshButtonActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
@@ -1775,6 +1934,7 @@ public class AirportFrame extends javax.swing.JFrame {
             if (!id.equals(userSelect.getItemAt(0))) {
                 UI_IdTextField.setText(id);
                 ATF_IdTextField.setText(id);
+                this.showPassengerFlights(id);
             } else {
                 UI_IdTextField.setText("");
                 ATF_IdTextField.setText("");
@@ -1806,6 +1966,10 @@ public class AirportFrame extends javax.swing.JFrame {
     private void FR_DepartureLocationComboBoxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FR_DepartureLocationComboBoxMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_FR_DepartureLocationComboBoxMouseClicked
+
+    private void UI_IdTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UI_IdTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_UI_IdTextFieldActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField AR_AirlineTextField;

@@ -96,6 +96,11 @@ public class PlaneController {
             }
 
             ArrayList<Plane> lista = PlaneStorage.getInstance().getLista();
+            
+            if(lista.isEmpty()){
+                return new Response("No hay datos de aviones", Status.NO_CONTENT);
+            }
+            
             ArrayList<Plane> copia = new ArrayList<>();
             for (Plane plane : lista) {
                 copia.add(plane.clone());
@@ -116,6 +121,26 @@ public class PlaneController {
             return new Response("Id del avión obtenida exitosamente", Status.OK, id);
         } catch (CloneNotSupportedException e) {
             return new Response("Error interno obteniendo id del avion", Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    public static Response getPlaneRow(Object obj) {
+        try {
+            if (!(obj instanceof Plane)) {
+                return new Response("El item seleccionado no es un avion", Status.BAD_REQUEST);
+            }
+            Plane plane = ((Plane) obj).clone();
+            Object[] planeRow = new Object[]{
+                plane.getId(),
+                plane.getBrand(),
+                plane.getModel(),
+                plane.getMaxCapacity(),
+                plane.getAirline(),
+                plane.getNumFlights()
+            };
+            return new Response("Avion obtenido exitosamente", Status.OK, planeRow);
+        } catch (CloneNotSupportedException e) {
+            return new Response("Error interno obteniendo el avion", Status.INTERNAL_SERVER_ERROR);
         }
     }
 }

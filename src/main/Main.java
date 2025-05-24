@@ -15,6 +15,7 @@ import core.models.storage.utils.JsonStorage;
 import core.views.AirportFrame;
 import java.util.ArrayList;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -32,14 +33,12 @@ public class Main {
 
         try {
             UIManager.setLookAndFeel(new FlatDarkLaf());
-        } catch (Exception ex) {
+        } catch (UnsupportedLookAndFeelException ex) {
             System.err.println("Failed to initialize LaF");
         }
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AirportFrame().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new AirportFrame().setVisible(true);
         });
     }
 }

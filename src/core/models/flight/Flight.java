@@ -81,6 +81,8 @@ public class Flight implements Cloneable{
         return departureDate;
     }
 
+    
+    
     public int getHoursDurationArrival() {
         return hoursDurationArrival;
     }

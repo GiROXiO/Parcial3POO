@@ -182,7 +182,7 @@ public class FlightController {
         }
     }
 
-    public static Response getFlights(){
+    public static Response getFlights() {
         try {
             boolean sw = FlightStorage.getInstance().load();
 
@@ -191,6 +191,11 @@ public class FlightController {
             }
 
             ArrayList<Flight> lista = FlightStorage.getInstance().getLista();
+            
+            if(lista.isEmpty()){
+                return new Response("No hay datos de vuelos", Status.NO_CONTENT);
+            }
+            
             ArrayList<Flight> copia = new ArrayList<>();
 
             for (Flight flight : lista) {
@@ -203,7 +208,7 @@ public class FlightController {
         }
     }
 
-    public static Response getFlightId(Object obj){
+    public static Response getFlightId(Object obj) {
         try {
             if (!(obj instanceof Flight)) {
                 return new Response("El id no corresponde al de un vuelo", Status.BAD_REQUEST);
@@ -212,6 +217,68 @@ public class FlightController {
             return new Response("Id del vuelo obtenido exitosamente", Status.OK, id);
         } catch (CloneNotSupportedException e) {
             return new Response("Error interno obteniendo el ID del vuelo", Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public static Response getFlightRow(Object obj) {
+        try {
+            if (!(obj instanceof Flight)) {
+                return new Response("El item seleccionado no es un vuelo", Status.BAD_REQUEST);
+            }
+            Flight flight = ((Flight) obj).clone();
+            Object[] flightRow;
+            if (flight.getScaleLocation() != null) {
+                flightRow = new Object[]{
+                    flight.getId(),
+                    flight.getDepartureLocation().getAirportId(),
+                    flight.getArrivalLocation().getAirportId(),
+                    flight.getScaleLocation().getAirportId(),
+                    flight.getDepartureDate().toLocalDate(),
+                    flight.getDepartureDate().plusHours(flight.getHoursDurationArrival() + flight.getHoursDurationScale()).plusMinutes(flight.getMinutesDurationArrival() + flight.getMinutesDurationScale()).toLocalDate(),
+                    flight.getPlane().getId(),
+                    flight.getNumPassengers()
+                };
+            } else {
+                flightRow = new Object[]{
+                    flight.getId(),
+                    flight.getDepartureLocation().getAirportId(),
+                    flight.getArrivalLocation().getAirportId(),
+                    "Non-Stop",
+                    flight.getDepartureDate().toLocalDate(),
+                    flight.getDepartureDate().plusHours(flight.getHoursDurationArrival()).plusMinutes(flight.getMinutesDurationArrival()).toLocalDate(),
+                    flight.getPlane().getId(),
+                    flight.getNumPassengers()
+                };
+            }
+            return new Response("Vuelo obtenido exitosamente", Status.OK, flightRow);
+        } catch (CloneNotSupportedException e) {
+            return new Response("Error interno obteniendo el vuelo", Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public static Response getPassengerFlightRow(Object obj) {
+        try {
+            if (!(obj instanceof Flight)) {
+                return new Response("El item seleccionado no es un vuelo", Status.BAD_REQUEST);
+            }
+            Flight flight = ((Flight) obj).clone();
+            Object[] flightRow;
+            if (flight.getScaleLocation() != null) {
+                flightRow = new Object[]{
+                    flight.getId(),
+                    flight.getDepartureDate().toLocalDate(),
+                    flight.getDepartureDate().plusHours(flight.getHoursDurationArrival() + flight.getHoursDurationScale()).plusMinutes(flight.getMinutesDurationArrival() + flight.getMinutesDurationScale()).toLocalDate()
+                };
+            } else {
+                flightRow = new Object[]{
+                    flight.getId(),
+                    flight.getDepartureDate().toLocalDate(),
+                    flight.getDepartureDate().plusHours(flight.getHoursDurationArrival()).plusMinutes(flight.getMinutesDurationArrival()).toLocalDate(),
+                };
+            }
+            return new Response("Vuelo del pasajero obtenido exitosamente", Status.OK, flightRow);
+        } catch (CloneNotSupportedException e) {
+            return new Response("Error interno obteniendo el vuelo", Status.INTERNAL_SERVER_ERROR);
         }
     }
 }
