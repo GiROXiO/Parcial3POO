@@ -14,23 +14,24 @@ public class PassengerController {
     {
         try
         {
-            int idInt, yearInt, monthInt, dayInt, phoneCodeInt, phoneNumberInt;
+            long idL, phoneNumberL;
+            int yearInt, monthInt, dayInt, phoneCodeInt;
             LocalDate fecha;
             PassengerStorage storage = PassengerStorage.getInstance();
             // Verifica si el ID tiene entre 1 y 15 digitos
              
             try
             {
-                idInt = Integer.parseInt(id);
+                idL = Long.parseLong(id.trim());
                 
-                if (idInt < 0 | String.valueOf(idInt).length() > 15)
+                if (idL < 0 | String.valueOf(idL).length() > 15)
                 {
                     return new Response("ID must be between 1 to 15 digits.", Status.BAD_REQUEST);
                 }
             }
             catch(Exception e)
             {
-                return new Response("ID must be numeric", Status.BAD_REQUEST);
+                return new Response("ID must be numeric and between 1 to 15 digits.", Status.BAD_REQUEST);
             }
             
             // Verifica si el ID ya existe
@@ -68,7 +69,7 @@ public class PassengerController {
             }
             catch(Exception e)
             {
-                return new Response("The year of birth must be numeric", Status.BAD_REQUEST);
+                return new Response("The date of birth must be valid", Status.BAD_REQUEST);
             }
             
             
@@ -92,7 +93,7 @@ public class PassengerController {
             
             try
             {
-                phoneCodeInt = Integer.parseInt(phoneCode);
+                phoneCodeInt = Integer.parseInt(phoneCode.trim());
                 if (phoneCodeInt < 0 | phoneCodeInt >= 1000)
                 {
                     return new Response("Phone code must be between 1 and 3 digits.", Status.BAD_REQUEST);
@@ -100,7 +101,7 @@ public class PassengerController {
             }
             catch(Exception e)
             {
-                return new Response("Phone code must be numeric", Status.BAD_REQUEST);
+                return new Response("Phone code must be numeric and filled in", Status.BAD_REQUEST);
             }
             
             
@@ -108,15 +109,15 @@ public class PassengerController {
             
             try
             {
-                phoneNumberInt = Integer.parseInt(phoneNumber);
-                if (phoneNumberInt < 0 | String.valueOf(phoneNumberInt).length() > 11)
+                phoneNumberL = Long.parseLong(phoneNumber);
+                if (phoneNumberL < 0 | String.valueOf(phoneNumberL).length() > 11)
                 {
                     return new Response("Phone number must be between 1 and 11 digits.", Status.BAD_REQUEST);
                 }
             }
             catch(Exception e)
             {
-                return new Response("Phone code must be numeric", Status.BAD_REQUEST);
+                return new Response("Phone number must be numeric and filled in.", Status.BAD_REQUEST);
             }
             
             
