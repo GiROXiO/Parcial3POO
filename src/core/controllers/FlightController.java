@@ -179,13 +179,13 @@ public class FlightController {
             boolean sw = FlightStorage.getInstance().load();
 
             if (!sw) {
-                return new Response("Error cargando los vuelos", Status.INTERNAL_SERVER_ERROR);
+                return new Response("Internal error loading flights information", Status.INTERNAL_SERVER_ERROR);
             }
 
             ArrayList<Flight> lista = FlightStorage.getInstance().getLista();
             
             if(lista.isEmpty()){
-                return new Response("No hay datos de vuelos", Status.NO_CONTENT);
+                return new Response("There are no flights in the storage", Status.NO_CONTENT);
             }
             
             ArrayList<Flight> copia = new ArrayList<>();
@@ -194,28 +194,28 @@ public class FlightController {
                 copia.add(flight.clone());
             }
 
-            return new Response("Vuelos cargados correctamente", Status.OK, copia);
+            return new Response("Flights information loaded succesfully in the system", Status.OK, copia);
         } catch (CloneNotSupportedException e) {
-            return new Response("Error interno obteniendo los vuelos", Status.INTERNAL_SERVER_ERROR);
+            return new Response("Internal error loading flights information", Status.INTERNAL_SERVER_ERROR);
         }
     }
 
     public static Response getFlightId(Object obj) {
         try {
             if (!(obj instanceof Flight)) {
-                return new Response("El id no corresponde al de un vuelo", Status.BAD_REQUEST);
+                return new Response("The selection is not a flight", Status.BAD_REQUEST);
             }
             String id = ((Flight) obj).clone().getId();
-            return new Response("Id del vuelo obtenido exitosamente", Status.OK, id);
+            return new Response("Flight ID got succesfully", Status.OK, id);
         } catch (CloneNotSupportedException e) {
-            return new Response("Error interno obteniendo el ID del vuelo", Status.INTERNAL_SERVER_ERROR);
+            return new Response("Internal error getting flight ID", Status.INTERNAL_SERVER_ERROR);
         }
     }
 
-    public static Response getFlightRow(Object obj) {
+    public static Response getFlightInfo(Object obj) {
         try {
             if (!(obj instanceof Flight)) {
-                return new Response("El item seleccionado no es un vuelo", Status.BAD_REQUEST);
+                return new Response("The selection is not a flight", Status.BAD_REQUEST);
             }
             Flight flight = ((Flight) obj).clone();
             Object[] flightRow;
@@ -242,16 +242,16 @@ public class FlightController {
                     flight.getNumPassengers()
                 };
             }
-            return new Response("Vuelo obtenido exitosamente", Status.OK, flightRow);
+            return new Response("Flight information got succesfully", Status.OK, flightRow);
         } catch (CloneNotSupportedException e) {
-            return new Response("Error interno obteniendo el vuelo", Status.INTERNAL_SERVER_ERROR);
+            return new Response("Internal error getting flight information", Status.INTERNAL_SERVER_ERROR);
         }
     }
 
-    public static Response getPassengerFlightRow(Object obj) {
+    public static Response getPassengerFlightInfo(Object obj) {
         try {
             if (!(obj instanceof Flight)) {
-                return new Response("El item seleccionado no es un vuelo", Status.BAD_REQUEST);
+                return new Response("The selection is not a flight", Status.BAD_REQUEST);
             }
             Flight flight = ((Flight) obj).clone();
             Object[] flightRow;
@@ -268,9 +268,9 @@ public class FlightController {
                     flight.getDepartureDate().plusHours(flight.getHoursDurationArrival()).plusMinutes(flight.getMinutesDurationArrival()).toLocalDate(),
                 };
             }
-            return new Response("Vuelo del pasajero obtenido exitosamente", Status.OK, flightRow);
+            return new Response("Passenger flight information got succesfully", Status.OK, flightRow);
         } catch (CloneNotSupportedException e) {
-            return new Response("Error interno obteniendo el vuelo", Status.INTERNAL_SERVER_ERROR);
+            return new Response("Internal error getting passenger flight information", Status.INTERNAL_SERVER_ERROR);
         }
     }
     

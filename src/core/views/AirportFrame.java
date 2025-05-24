@@ -211,7 +211,7 @@ public class AirportFrame extends javax.swing.JFrame {
         } else {
             ArrayList<Object> lista = (ArrayList<Object>) response.getObject();
             for (Object obj : lista) {
-                Response flight = FlightController.getFlightRow(obj);
+                Response flight = FlightController.getFlightInfo(obj);
                 if (flight.getStatus() >= 500) {
                     JOptionPane.showMessageDialog(null, flight.getMessage(), "Error " + flight.getStatus(), JOptionPane.ERROR_MESSAGE);
                     return;
@@ -240,7 +240,7 @@ public class AirportFrame extends javax.swing.JFrame {
         } else {
             ArrayList<Object> lista = (ArrayList<Object>) response.getObject();
             for (Object obj : lista) {
-                Response passenger = PassengerController.getPassengerRow(obj);
+                Response passenger = PassengerController.getPassengerInfo(obj);
                 if (passenger.getStatus() >= 500) {
                     JOptionPane.showMessageDialog(null, passenger.getMessage(), "Error " + passenger.getStatus(), JOptionPane.ERROR_MESSAGE);
                     return;
@@ -269,7 +269,7 @@ public class AirportFrame extends javax.swing.JFrame {
         } else {
             ArrayList<Object> lista = (ArrayList<Object>) response.getObject();
             for (Object obj : lista) {
-                Response plane = PlaneController.getPlaneRow(obj);
+                Response plane = PlaneController.getPlaneInfo(obj);
                 if (plane.getStatus() >= 500) {
                     JOptionPane.showMessageDialog(null, plane.getMessage(), "Error " + plane.getStatus(), JOptionPane.ERROR_MESSAGE);
                     return;
@@ -298,7 +298,7 @@ public class AirportFrame extends javax.swing.JFrame {
         } else {
             ArrayList<Object> lista = (ArrayList<Object>) response.getObject();
             for (Object obj : lista) {
-                Response location = LocationController.getLocationRow(obj);
+                Response location = LocationController.getLocationInfo(obj);
                 if (location.getStatus() >= 500) {
                     JOptionPane.showMessageDialog(null, location.getMessage(), "Error " + location.getStatus(), JOptionPane.ERROR_MESSAGE);
                     return;
@@ -328,7 +328,7 @@ public class AirportFrame extends javax.swing.JFrame {
         } else {
             ArrayList<Object> lista = (ArrayList<Object>) response.getObject();
             for (Object obj : lista) {
-                Response flight = FlightController.getPassengerFlightRow(obj);
+                Response flight = FlightController.getPassengerFlightInfo(obj);
                 if (flight.getStatus() >= 500) {
                     JOptionPane.showMessageDialog(null, flight.getMessage(), "Error " + flight.getStatus(), JOptionPane.ERROR_MESSAGE);
                     return;
@@ -1742,7 +1742,8 @@ public class AirportFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
-
+            
+            
             PR_IDTextField.setText("");
             PR_FirstNameTextField.setText("");
             PR_LastNameTextField.setText("");

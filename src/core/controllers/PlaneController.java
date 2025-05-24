@@ -90,13 +90,13 @@ public class PlaneController {
             boolean sw = PlaneStorage.getInstance().load();
 
             if (!sw) {
-                return new Response("Error en el cargado de los aviones", Status.INTERNAL_SERVER_ERROR);
+                return new Response("Internal error loading planes", Status.INTERNAL_SERVER_ERROR);
             }
 
             ArrayList<Plane> lista = PlaneStorage.getInstance().getLista();
             
             if(lista.isEmpty()){
-                return new Response("No hay datos de aviones", Status.NO_CONTENT);
+                return new Response("There are no planes in the storage", Status.NO_CONTENT);
             }
             
             ArrayList<Plane> copia = new ArrayList<>();
@@ -104,7 +104,7 @@ public class PlaneController {
                 copia.add(plane.clone());
             }
 
-            return new Response("Aviones cargados correctamente", Status.OK, copia);
+            return new Response("Planes information loaded succesfully in the system", Status.OK, copia);
         } catch (CloneNotSupportedException e) {
             return new Response("Error interno obteniendo los aviones", Status.INTERNAL_SERVER_ERROR);
         }
@@ -113,19 +113,19 @@ public class PlaneController {
     public static Response getPlaneId(Object obj){
         try {
             if (!(obj instanceof Plane)) {
-                return new Response("Avión no válido", Status.BAD_REQUEST);
+                return new Response("The selection is not a plane", Status.BAD_REQUEST);
             }
             String id = ((Plane) obj).clone().getId();
-            return new Response("Id del avión obtenida exitosamente", Status.OK, id);
+            return new Response("Plane ID got succesfully", Status.OK, id);
         } catch (CloneNotSupportedException e) {
-            return new Response("Error interno obteniendo id del avion", Status.INTERNAL_SERVER_ERROR);
+            return new Response("Internal error getting plane ID", Status.INTERNAL_SERVER_ERROR);
         }
     }
     
-    public static Response getPlaneRow(Object obj) {
+    public static Response getPlaneInfo(Object obj) {
         try {
             if (!(obj instanceof Plane)) {
-                return new Response("El item seleccionado no es un avion", Status.BAD_REQUEST);
+                return new Response("The selection is not a plane", Status.BAD_REQUEST);
             }
             Plane plane = ((Plane) obj).clone();
             Object[] planeRow = new Object[]{
@@ -136,9 +136,9 @@ public class PlaneController {
                 plane.getAirline(),
                 plane.getNumFlights()
             };
-            return new Response("Avion obtenido exitosamente", Status.OK, planeRow);
+            return new Response("Plane information got succesfully", Status.OK, planeRow);
         } catch (CloneNotSupportedException e) {
-            return new Response("Error interno obteniendo el avion", Status.INTERNAL_SERVER_ERROR);
+            return new Response("Internal error getting plane information", Status.INTERNAL_SERVER_ERROR);
         }
     }
 }

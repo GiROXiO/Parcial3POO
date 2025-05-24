@@ -113,13 +113,13 @@ public class LocationController {
             boolean sw = LocationStorage.getInstance().load();
 
             if (!sw) {
-                return new Response("Error en el cargado de las ubicaciones", Status.INTERNAL_SERVER_ERROR);
+                return new Response("Internal error loading locations", Status.INTERNAL_SERVER_ERROR);
             }
 
             ArrayList<Location> lista = LocationStorage.getInstance().getLista();
             
             if(lista.isEmpty()){
-                return new Response("No hay datos de ubicaciones", Status.NO_CONTENT);
+                return new Response("there are no locations in the storage", Status.NO_CONTENT);
             }
             
             ArrayList<Location> copia = new ArrayList<>();
@@ -127,28 +127,28 @@ public class LocationController {
                 copia.add(location.clone());
             }
 
-            return new Response("Ubicaciones cargadas correctamente", Status.OK, copia);
+            return new Response("Locations information loaded succesfully in the system", Status.OK, copia);
         } catch (CloneNotSupportedException e) {
-            return new Response("Error interno obteniendo las ubicaciones", Status.INTERNAL_SERVER_ERROR);
+            return new Response("Internal error loading locations information", Status.INTERNAL_SERVER_ERROR);
         }
     }
 
     public static Response getLocationId(Object obj) {
         try {
             if (!(obj instanceof Location)) {
-                return new Response("Ubicacion no válida", Status.BAD_REQUEST);
+                return new Response("The selection is not a location", Status.BAD_REQUEST);
             }
             String id = ((Location) obj).clone().getAirportId();
-            return new Response("Id de la ubicación obtenida exitosamente", Status.OK, id);
+            return new Response("Location ID got succesfully", Status.OK, id);
         } catch (CloneNotSupportedException e) {
-            return new Response("Error interno obteniendo el id de las ubicaciones", Status.INTERNAL_SERVER_ERROR);
+            return new Response("Internal error getting location ID", Status.INTERNAL_SERVER_ERROR);
         }
     }
     
-    public static Response getLocationRow(Object obj) {
+    public static Response getLocationInfo(Object obj) {
         try {
             if (!(obj instanceof Location)) {
-                return new Response("El item seleccionado no es una ubicacion", Status.BAD_REQUEST);
+                return new Response("The selection is not a location", Status.BAD_REQUEST);
             }
             Location location = ((Location) obj).clone();
             Object[] locationRow = new Object[]{
@@ -157,9 +157,9 @@ public class LocationController {
                 location.getAirportCity(),
                 location.getAirportCountry(),
             };
-            return new Response("Ubicacion obtenida exitosamente", Status.OK, locationRow);
+            return new Response("Location information got succesfully", Status.OK, locationRow);
         } catch (CloneNotSupportedException e) {
-            return new Response("Error interno obteniendo la ubicacion", Status.INTERNAL_SERVER_ERROR);
+            return new Response("Internal error getting location information", Status.INTERNAL_SERVER_ERROR);
         }
     }
 }

@@ -8,33 +8,33 @@ import core.models.passenger.Passenger;
 import core.models.storage.utils.JsonPath;
 import core.models.storage.utils.JsonStorage;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+public class PassengerStorage extends Storage<Passenger> {
 
-public class PassengerStorage extends Storage<Passenger>{
-    
     private static PassengerStorage instance;
-    
-    private ArrayList<String> prueba = new ArrayList<>();
 
     private PassengerStorage() {
         super(JsonPath.PASSENGERS.getPath());
     }
-    
-    public static PassengerStorage getInstance(){
-        if(instance == null){
+
+    public static PassengerStorage getInstance() {
+        if (instance == null) {
             instance = new PassengerStorage();
         }
         return instance;
     }
- 
+
     @Override
     public boolean add(Passenger obj) {
-        for(Passenger passenger : this.lista){
-            if(passenger.getId() == obj.getId()) return false;
+        for (Passenger passenger : this.lista) {
+            if (passenger.getId() == obj.getId()) {
+                return false;
+            }
         }
         this.lista.add(obj);
         return true;
@@ -42,14 +42,16 @@ public class PassengerStorage extends Storage<Passenger>{
 
     @Override
     public Passenger get(String id) {
-        for(Passenger passenger:this.lista){
-            if(String.valueOf(passenger.getId()).equalsIgnoreCase(id)) return passenger;
+        for (Passenger passenger : this.lista) {
+            if (String.valueOf(passenger.getId()).equalsIgnoreCase(id)) {
+                return passenger;
+            }
         }
         return null;
     }
-
+    
     @Override
-    public boolean del(int id) {
+    public boolean upd(int id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -69,11 +71,13 @@ public class PassengerStorage extends Storage<Passenger>{
                 Passenger passenger = new Passenger(id, firstname, lastname, birthDate, countryPhoneCode, phone, country);
                 this.add(passenger);
             }
+            Collections.sort(this.lista, Comparator.comparing(passenger -> {
+                return passenger.getId();
+            }));
             return true;
         } catch (JSONException | NumberFormatException e) {
-            System.out.println("Error: "+e);
+            System.out.println("Error: " + e);
             return false;
         }
     }
-    
 }

@@ -7,15 +7,14 @@ package core.models.storage;
 import core.models.plane.Plane;
 import core.models.storage.utils.JsonPath;
 import core.models.storage.utils.JsonStorage;
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class PlaneStorage extends Storage<Plane>{
      private static PlaneStorage instance;
-    
-    private ArrayList<String> prueba = new ArrayList<>();
 
     private PlaneStorage() {
         super(JsonPath.PLANES.getPath());
@@ -46,7 +45,7 @@ public class PlaneStorage extends Storage<Plane>{
     }
 
     @Override
-    public boolean del(int id) {
+    public boolean upd(int id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -64,6 +63,9 @@ public class PlaneStorage extends Storage<Plane>{
                 Plane plane = new Plane(id, brand, model, maxCapacity, airline);           
                 this.add(plane);
             }
+            Collections.sort(this.lista, Comparator.comparing(plane -> {
+                return plane.getId();
+            }));
             return true;
         } catch (JSONException | NumberFormatException e) {
             return false;

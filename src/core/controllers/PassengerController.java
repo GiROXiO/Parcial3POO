@@ -152,13 +152,13 @@ public class PassengerController {
             boolean sw = PassengerStorage.getInstance().load();
 
             if (!sw) {
-                return new Response("Error cargando los pasajeros", Status.INTERNAL_SERVER_ERROR);
+                return new Response("Internal error loading passengers information", Status.INTERNAL_SERVER_ERROR);
             }
 
             ArrayList<Passenger> lista = PassengerStorage.getInstance().getLista();
             
             if(lista.isEmpty()){
-                return new Response("No hay datos de pasajeros", Status.NO_CONTENT);
+                return new Response("There are no passengers in the storage", Status.NO_CONTENT);
             }
             
             ArrayList<Passenger> copia = new ArrayList<>();
@@ -167,28 +167,28 @@ public class PassengerController {
                 copia.add(passenger.clone());
             }
 
-            return new Response("Pasajeros cargados correctamente", Status.OK, copia);
+            return new Response("Passengers information loaded succesfully in the system", Status.OK, copia);
         } catch (CloneNotSupportedException e) {
-            return new Response("Error interno obteniendo los pasajeros", Status.INTERNAL_SERVER_ERROR);
+            return new Response("Internal error loading passengers information", Status.INTERNAL_SERVER_ERROR);
         }
     }
 
     public static Response getPassengerId(Object obj){
         try {
             if (!(obj instanceof Passenger)) {
-                return new Response("El id no corresponde al de un pasajero", Status.BAD_REQUEST);
+                return new Response("The selection is not a passenger", Status.BAD_REQUEST);
             }
             String id = String.valueOf(((Passenger)obj).clone().getId());
-            return new Response("Id del vuelo obtenido exitosamente", Status.OK, id);
+            return new Response("Passenger ID got succesfully", Status.OK, id);
         } catch (CloneNotSupportedException e) {
-            return new Response("Error interno obteniendo el ID del pasajero", Status.INTERNAL_SERVER_ERROR);
+            return new Response("Internal error getting passenger ID", Status.INTERNAL_SERVER_ERROR);
         }
     }
     
-    public static Response getPassengerRow(Object obj) {
+    public static Response getPassengerInfo(Object obj) {
         try {
             if (!(obj instanceof Passenger)) {
-                return new Response("El item seleccionado no es un pasajero", Status.BAD_REQUEST);
+                return new Response("Item selected is not a passenger", Status.BAD_REQUEST);
             }
             Passenger passenger = ((Passenger) obj).clone();
             Object[] passengerRow = new Object[]{
@@ -200,9 +200,9 @@ public class PassengerController {
                 passenger.getCountry(),
                 passenger.getNumFlights()
             };
-            return new Response("Pasajero obtenido exitosamente", Status.OK, passengerRow);
+            return new Response("Passenger information got succesfully", Status.OK, passengerRow);
         } catch (CloneNotSupportedException e) {
-            return new Response("Error interno obteniendo el pasajero", Status.INTERNAL_SERVER_ERROR);
+            return new Response("Internal error getting passenger information", Status.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -211,13 +211,13 @@ public class PassengerController {
             boolean sw = PassengerStorage.getInstance().load();
 
             if (!sw) {
-                return new Response("Error cargando los pasajeros", Status.INTERNAL_SERVER_ERROR);
+                return new Response("Internal error loading passengers", Status.INTERNAL_SERVER_ERROR);
             }
 
             ArrayList<Passenger> lista = PassengerStorage.getInstance().getLista();
             
             if(lista.isEmpty()){
-                return new Response("La lista de pasajeros esta vacia", Status.NO_CONTENT);
+                return new Response("There is no passenger information", Status.NO_CONTENT);
             }
             
             ArrayList<Flight> passengerFlights = new ArrayList<>();
@@ -229,12 +229,12 @@ public class PassengerController {
             }
             
             if(passengerFlights.isEmpty()){
-                return new Response("La lista de vuelos del pasajero seleccionado esta vacia", Status.NO_CONTENT);
+                return new Response("Passenger has not any flights", Status.NO_CONTENT);
             }
             
-            return new Response("Vuelos del pasajero cargados correctamente", Status.OK, passengerFlights);
+            return new Response("Passenger flights loaded succesfully", Status.OK, passengerFlights);
         } catch (CloneNotSupportedException e) {
-            return new Response("Error interno obteniendo los pasajeros", Status.INTERNAL_SERVER_ERROR);
+            return new Response("Internal error loading passengers information", Status.INTERNAL_SERVER_ERROR);
         }
     }
 }
