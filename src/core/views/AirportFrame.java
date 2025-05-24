@@ -319,7 +319,6 @@ public class AirportFrame extends javax.swing.JFrame {
         model.setRowCount(0);
         Long id = Long.valueOf(passengerId);
         Response response = PassengerController.getPassengerFlights(id);
-        System.out.println(response.getStatus());
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
         } else if (response.getStatus() >= 400) {
