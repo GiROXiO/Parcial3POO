@@ -1897,9 +1897,20 @@ public class AirportFrame extends javax.swing.JFrame {
 
     private void ATF_AddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ATF_AddButtonActionPerformed
         // TODO add your handling code here:
-        long passengerId = Long.parseLong(ATF_IdTextField.getText());
+        String passengerId = userSelect.getItemAt(userSelect.getSelectedIndex());
         String flightId = ATF_FlightComboBox.getItemAt(ATF_FlightComboBox.getSelectedIndex());
+        
+        Response response = PassengerController.addFlight(passengerId, flightId);
 
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+            ATF_FlightComboBox.setSelectedIndex(0);
+        }
+        
     }//GEN-LAST:event_ATF_AddButtonActionPerformed
 
     private void DF_DelayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DF_DelayButtonActionPerformed

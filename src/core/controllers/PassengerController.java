@@ -4,6 +4,7 @@ import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.flight.Flight;
 import core.models.passenger.Passenger;
+import core.models.storage.FlightStorage;
 import core.models.storage.PassengerStorage;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -255,6 +256,40 @@ public class PassengerController {
         
     }
     
+    public static Response addFlight(String id, String flightId)
+    {
+        try
+        {
+            
+            PassengerStorage passengerStorage = PassengerStorage.getInstance();
+            FlightStorage flightStorage = FlightStorage.getInstance();
+            
+            Passenger passenger = passengerStorage.get(id);
+            Flight flight = flightStorage.get(flightId);
+            
+            // Comprobar tanto si el id del usuario como el del vuelo fueron seleccionados
+            
+            if(passenger == null)
+            {
+                return new Response("User ID not selected", Status.BAD_REQUEST);
+            }
+            
+            if(flight == null)
+            {
+                return new Response("Flight ID not selected", Status.BAD_REQUEST);
+            }
+            
+            
+            passenger.addFlight(flight);
+            flight.addPassenger(passenger);
+            
+            return new Response("Flight succesfully added", Status.OK);
+        }
+        catch(Exception e)
+        {
+            return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
+        }
+    }
     
     
     public static Response getPassengers(){
