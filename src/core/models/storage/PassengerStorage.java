@@ -50,10 +50,6 @@ public class PassengerStorage extends Storage<Passenger> {
         return null;
     }
     
-<<<<<<< HEAD
-=======
-
->>>>>>> e84f0e08cc9c73bcdcfe23fb89babb5056f00f92
     @Override
     public boolean upd(int id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
