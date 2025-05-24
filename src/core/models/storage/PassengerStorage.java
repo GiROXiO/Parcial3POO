@@ -47,6 +47,27 @@ public class PassengerStorage extends Storage<Passenger>{
         }
         return null;
     }
+    
+    
+    public boolean modify(String id, String firstName, String lastName, LocalDate date, int phoneCode, long phoneNumber, String country) {
+        try
+        {
+            Passenger passenger = this.get(id);
+
+            passenger.setFirstname(firstName);
+            passenger.setLastname(lastName);
+            passenger.setBirthDate(date);
+            passenger.setCountryPhoneCode(phoneCode);
+            passenger.setPhone(phoneNumber);
+            passenger.setCountry(country);
+            
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
 
     @Override
     public boolean del(int id) {

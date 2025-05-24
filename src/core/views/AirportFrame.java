@@ -1734,7 +1734,7 @@ public class AirportFrame extends javax.swing.JFrame {
         String phone = PR_NumeroTelefonicoTextField.getText();
         String country = PR_PaisTextField.getText();
 
-        Response response = PassengerController.PassengerRegistration(id, firstname, lastname, year, month, day, phoneCode, phone, country, true);
+        Response response = PassengerController.PassengerRegistration(id, firstname, lastname, year, month, day, phoneCode, phone, country);
 
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
@@ -1873,7 +1873,7 @@ public class AirportFrame extends javax.swing.JFrame {
         String phone = UI_NumeroTelefonicoTextField.getText();
         String country = UI_PaisTextField.getText();
 
-        Response response = PassengerController.PassengerRegistration(id, firstname, lastname, year, month, day, phoneCode, phone, country, false);
+        Response response = PassengerController.updatePassenger(id, firstname, lastname, year, month, day, phoneCode, phone, country);
 
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
@@ -1882,15 +1882,14 @@ public class AirportFrame extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
 
-            PR_IDTextField.setText("");
-            PR_FirstNameTextField.setText("");
-            PR_LastNameTextField.setText("");
-            PR_YearTextField.setText("");
-            PR_codigoPaisTextField.setText("");
-            PR_NumeroTelefonicoTextField.setText("");
-            PR_PaisTextField.setText("");
-            PR_MonthComboBox.setSelectedIndex(0);
-            PR_DayComboBox.setSelectedIndex(0);
+            UI_FirstNameTextField.setText("");
+            UI_LastNameTextField.setText("");
+            UI_BirthdayTextField.setText("");
+            UI_codigoPaisTextField.setText("");
+            UI_NumeroTelefonicoTextField.setText("");
+            UI_PaisTextField.setText("");
+            UI_MonthComboBox.setSelectedIndex(0);
+            UI_DayComboBox.setSelectedIndex(0);
 
         }
 
