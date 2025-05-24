@@ -4,13 +4,14 @@ import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.flight.Flight;
 import core.models.passenger.Passenger;
+import core.models.storage.FlightStorage;
 import core.models.storage.PassengerStorage;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class PassengerController {
 
-    public static Response PassengerRegistration(String id, String firstName, String lastName, String yearBirthday, String monthBirthday, String dayBirthday, String phoneCode, String phoneNumber, String country, boolean register)
+    public static Response PassengerRegistration(String id, String firstName, String lastName, String yearBirthday, String monthBirthday, String dayBirthday, String phoneCode, String phoneNumber, String country)
     {
         try
         {
@@ -18,12 +19,13 @@ public class PassengerController {
             int yearInt, monthInt, dayInt, phoneCodeInt;
             LocalDate fecha;
             PassengerStorage storage = PassengerStorage.getInstance();
+            
             // Verifica si el ID tiene entre 1 y 15 digitos
-             
+            
             try
-            {
+            {   
                 idL = Long.parseLong(id.trim());
-                
+
                 if (idL < 0 || String.valueOf(idL).length() > 15)
                 {
                     return new Response("ID must be between 1 to 15 digits.", Status.BAD_REQUEST);
@@ -33,8 +35,9 @@ public class PassengerController {
             {
                 return new Response("ID must be numeric and between 1 to 15 digits.", Status.BAD_REQUEST);
             }
+
             
-            // Verifica si el ID ya existe
+           // Verifica si el ID ya existe
             
            try
             {
@@ -48,12 +51,29 @@ public class PassengerController {
                 return new Response("Database does not exist", Status.INTERNAL_SERVER_ERROR);
             }
             
+           
+            // Comprueba si el campo de los nombres y pais fueron llenados
+        
+            if (firstName.isBlank())
+            {
+                return new Response("The first name field must be filled in", Status.BAD_REQUEST);
+            }
+
+            if (lastName.isBlank())
+            {
+                return new Response("The last name field must be filled in", Status.BAD_REQUEST);
+            }
+
+            if (country.isBlank())
+            {
+                return new Response("The country field must be filled in", Status.BAD_REQUEST);
+            }
+            
             
             // Comprueba si la fecha es valida
             
             try
-            {    
-                
+            {
                 yearInt = Integer.parseInt(yearBirthday);
                 monthInt = Integer.parseInt(monthBirthday);
                 dayInt = Integer.parseInt(dayBirthday);
@@ -105,8 +125,40 @@ public class PassengerController {
                 return new Response("Phone number must be numeric and filled in.", Status.BAD_REQUEST);
             }
             
+            if (!storage.add(new Passenger(Long.parseLong(id), firstName, lastName, fecha, Integer.parseInt(phoneCode), Long.parseLong(phoneNumber), country))) 
+            {
+                return new Response("A passenger with that id already exists", Status.BAD_REQUEST);
+            }
+            else
+            {
+                return new Response("Passenger successfully registered", Status.CREATED);
+            }            
+        }
+        catch(Exception e)
+        {
+            return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
+        }
+        
+    }
+    
+    public static Response updatePassenger(String id, String firstName, String lastName, String yearBirthday, String monthBirthday, String dayBirthday, String phoneCode, String phoneNumber, String country)
+    {
+        try
+        {
+            long idL, phoneNumberL;
+            int yearInt, monthInt, dayInt, phoneCodeInt;
+            LocalDate fecha;
+            PassengerStorage storage = PassengerStorage.getInstance();
             
-            // Comprueba si el campo de los paises fue llenado
+            
+            // Verificar si se selecciono el ID del usuario
+            
+            if(storage.get(id) == null)
+            {
+                return new Response("User ID not selected", Status.BAD_REQUEST);
+            }
+           
+            // Comprueba si el campo de los nombres y pais fueron llenados
         
             if (firstName.isBlank())
             {
@@ -123,22 +175,79 @@ public class PassengerController {
                 return new Response("The country field must be filled in", Status.BAD_REQUEST);
             }
             
-            if (register)
+            
+            // Comprueba si la fecha es valida
+            
+            try
             {
-                if (!storage.add(new Passenger(Long.parseLong(id), firstName, lastName, fecha, Integer.parseInt(phoneCode), Long.parseLong(phoneNumber), country))) 
+                yearInt = Integer.parseInt(yearBirthday);
+                monthInt = Integer.parseInt(monthBirthday);
+                dayInt = Integer.parseInt(dayBirthday);
+                
+                fecha = LocalDate.of(yearInt, monthInt, dayInt);
+                
+                // Verifica si la persona no tiene más de 125 años (la persona más vieja del mundo vivio 122 años)
+           
+                if (LocalDate.now().getYear() - yearInt > 125 || fecha.isAfter(LocalDate.now()))
                 {
-                    return new Response("A passenger with that id already exists", Status.BAD_REQUEST);
+                    return new Response("The year of birth must be valid", Status.BAD_REQUEST);
                 }
-                else
+                
+            }
+            catch(Exception e)
+            {
+                return new Response("Date of birth must be valid", Status.BAD_REQUEST);
+            }
+            
+            
+            // Comprueba si el codigo telefonico tiene ente 1 y 3 digitos
+            
+            try
+            {
+                phoneCodeInt = Integer.parseInt(phoneCode.trim());
+                if (phoneCodeInt < 0 || phoneCodeInt >= 1000)
                 {
-                    return new Response("Passenger successfully registered", Status.CREATED);
+                    return new Response("Phone code must be between 1 and 3 digits.", Status.BAD_REQUEST);
                 }
             }
-            else
+            catch(Exception e)
             {
-                return null;
-                // aca meteria el codigo para modificar su info
+                return new Response("Phone code must be numeric and filled in", Status.BAD_REQUEST);
             }
+            
+            
+            // Comprueba si el numero telefonico tiene ente 1 y 11 digitos
+            
+            try
+            {
+                phoneNumberL = Long.parseLong(phoneNumber);
+                if (phoneNumberL < 0 || phoneNumber.trim().length() > 11)
+                {
+                    return new Response("Phone number must be between 1 and 11 digits.", Status.BAD_REQUEST);
+                }
+            }
+            catch(Exception e)
+            {
+                return new Response("Phone number must be numeric and filled in.", Status.BAD_REQUEST);
+            }
+            try
+            {
+                Passenger passenger = storage.get(id);
+                passenger.setFirstname(firstName);
+                passenger.setLastname(lastName);
+                passenger.setBirthDate(fecha);
+                passenger.setCountryPhoneCode(Integer.parseInt(phoneCode));
+                passenger.setPhone(Long.parseLong(phoneNumber));
+                passenger.setCountry(country);
+                
+                return new Response("Passenger succesfully updated", Status.OK);
+            }
+            catch(Exception e)
+            {
+                return new Response("Error updating passenger", Status.INTERNAL_SERVER_ERROR);
+            }
+           
+                   
         }
         catch(Exception e)
         {
@@ -146,6 +255,42 @@ public class PassengerController {
         }
         
     }
+    
+    public static Response addFlight(String id, String flightId)
+    {
+        try
+        {
+            
+            PassengerStorage passengerStorage = PassengerStorage.getInstance();
+            FlightStorage flightStorage = FlightStorage.getInstance();
+            
+            Passenger passenger = passengerStorage.get(id);
+            Flight flight = flightStorage.get(flightId);
+            
+            // Comprobar tanto si el id del usuario como el del vuelo fueron seleccionados
+            
+            if(passenger == null)
+            {
+                return new Response("User ID not selected", Status.BAD_REQUEST);
+            }
+            
+            if(flight == null)
+            {
+                return new Response("Flight ID not selected", Status.BAD_REQUEST);
+            }
+            
+            
+            passenger.addFlight(flight);
+            flight.addPassenger(passenger);
+            
+            return new Response("Flight succesfully added", Status.OK);
+        }
+        catch(Exception e)
+        {
+            return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
     
     public static Response getPassengers(){
         try {
