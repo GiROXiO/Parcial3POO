@@ -229,16 +229,23 @@ public class PassengerController {
             {
                 return new Response("Phone number must be numeric and filled in.", Status.BAD_REQUEST);
             }
-            
-            if (!storage.modify(id, firstName, lastName, fecha, Integer.parseInt(phoneCode), Long.parseLong(phoneNumber), country))
+            try
+            {
+                Passenger passenger = storage.get(id);
+                passenger.setFirstname(firstName);
+                passenger.setLastname(lastName);
+                passenger.setBirthDate(fecha);
+                passenger.setCountryPhoneCode(Integer.parseInt(phoneCode));
+                passenger.setPhone(Long.parseLong(phoneNumber));
+                passenger.setCountry(country);
+                
+                return new Response("Passenger succesfully updated", Status.OK);
+            }
+            catch(Exception e)
             {
                 return new Response("Error updating passenger", Status.INTERNAL_SERVER_ERROR);
             }
-            else
-            {
-                return new Response("Passenger successfully updated", Status.CREATED);
-            }
-            
+           
                    
         }
         catch(Exception e)
