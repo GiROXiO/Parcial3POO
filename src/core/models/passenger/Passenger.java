@@ -4,6 +4,7 @@
  */
 package core.models.passenger;
 
+import core.models.Clonable;
 import core.models.flight.Flight;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author edangulo
  */
-public class Passenger implements CloneablePassenger{
+public class Passenger implements Clonable<Passenger>{
     
     private final long id;
     private String firstname;
@@ -108,7 +109,7 @@ public class Passenger implements CloneablePassenger{
     
     
     @Override
-    public Passenger clonePassenger(){
+    public Passenger clone(){
         return new Passenger(id, firstname, lastname, birthDate, phoneNumber, country);
     }
 

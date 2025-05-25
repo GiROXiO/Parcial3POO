@@ -4,6 +4,7 @@
  */
 package core.models.plane;
 
+import core.models.Clonable;
 import core.models.flight.Flight;
 import java.util.ArrayList;
 
@@ -11,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author edangulo
  */
-public class Plane implements CloneablePlane{
+public class Plane implements Clonable<Plane>{
     
     private final String id;
     private String brand;
@@ -63,7 +64,7 @@ public class Plane implements CloneablePlane{
     }
     
     @Override
-    public Plane clonePlane() 
+    public Plane clone() 
     {
         return new Plane(id, brand, model, maxCapacity, airline);
     }

@@ -299,7 +299,7 @@ public class PassengerController {
             ArrayList<Passenger> copia = new ArrayList<>();
 
             for (Passenger passenger : lista) {
-                copia.add(passenger.clonePassenger());
+                copia.add(passenger.clone());
             }
 
             Collections.sort(copia, Comparator.comparing(passenger -> {
@@ -317,7 +317,7 @@ public class PassengerController {
             if (!(obj instanceof Passenger)) {
                 return new Response("The selection is not a passenger", Status.BAD_REQUEST);
             }
-            String id = String.valueOf(((Passenger) obj).clonePassenger().getId());
+            String id = String.valueOf(((Passenger) obj).clone().getId());
             return new Response("Passenger ID got succesfully", Status.OK, id);
         } catch (Exception e) {
             return new Response("Internal error getting passenger ID", Status.INTERNAL_SERVER_ERROR);
@@ -329,7 +329,7 @@ public class PassengerController {
             if (!(obj instanceof Passenger)) {
                 return new Response("Item selected is not a passenger", Status.BAD_REQUEST);
             }
-            Passenger passenger = ((Passenger) obj).clonePassenger();
+            Passenger passenger = ((Passenger) obj).clone();
             Object[] passengerRow = new Object[]{
                 passenger.getId(),
                 passenger.getFullName(),

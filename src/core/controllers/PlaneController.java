@@ -123,7 +123,7 @@ public class PlaneController {
             
             ArrayList<Plane> copia = new ArrayList<>();
             for (Plane plane : lista) {
-                copia.add(plane.clonePlane());
+                copia.add(plane.clone());
             }
 
             Collections.sort(copia, Comparator.comparing(plane -> {
@@ -141,7 +141,7 @@ public class PlaneController {
             if (!(obj instanceof Plane)) {
                 return new Response("The selection is not a plane", Status.BAD_REQUEST);
             }
-            String id = ((Plane) obj).clonePlane().getId();
+            String id = ((Plane) obj).clone().getId();
             return new Response("Plane ID got succesfully", Status.OK, id);
         } catch (Exception e) {
             return new Response("Internal error getting plane ID", Status.INTERNAL_SERVER_ERROR);
@@ -153,7 +153,7 @@ public class PlaneController {
             if (!(obj instanceof Plane)) {
                 return new Response("The selection is not a plane", Status.BAD_REQUEST);
             }
-            Plane plane = ((Plane) obj).clonePlane();
+            Plane plane = ((Plane) obj).clone();
             Object[] planeRow = new Object[]{
                 plane.getId(),
                 plane.getBrand(),
