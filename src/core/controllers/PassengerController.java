@@ -257,12 +257,7 @@ public class PassengerController {
             if (flight == null) {
                 return new Response("Flight ID not selected", Status.BAD_REQUEST);
             }
-<<<<<<< HEAD
 
-=======
-            
-            // Comprobar si el vuelo ya esta registrado en los vuelos del pasajero
-            
             for(Flight passsengerFlight : passenger.getFlights())
             {
                 if (flight == passsengerFlight)
@@ -270,10 +265,6 @@ public class PassengerController {
                     return new Response("Passenger has already registered for that flight.", Status.BAD_REQUEST);
                 }
             }
-            
->>>>>>> 670357d93b5ca286182c0ab74cd1978afea4c6bf
-            passenger.addFlight(flight);
-            flight.addPassenger(passenger);
 
             return new Response("Flight succesfully added", Status.OK);
         } catch (Exception e) {
