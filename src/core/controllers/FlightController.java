@@ -98,6 +98,21 @@ public class FlightController {
                 return new Response("Database does not exist.", Status.BAD_REQUEST);
             }
 
+            //Validando que id de salida, llegada y escala (si existe) no sean iguales
+            try {
+                if (scaleID != null) {
+                    if (salidaID.equalsIgnoreCase(llegadaID) || salidaID.equalsIgnoreCase(scaleID) || llegadaID.equalsIgnoreCase(scaleID)) {
+                        return new Response("Locations must be different", Status.BAD_REQUEST);
+                    }
+                } else {
+                    if (salidaID.equalsIgnoreCase(llegadaID)) {
+                        return new Response("Locations must be different", Status.BAD_REQUEST);
+                    }
+                }
+            } catch (Exception e) {
+                return new Response("Locations must be different", Status.BAD_REQUEST);
+            }
+
             // Validando fecha de salida
             try {
                 yearInt = Integer.parseInt(departureYear);
@@ -120,8 +135,6 @@ public class FlightController {
                 hourDurationInt = Integer.parseInt(hourDuration);
                 minuteDurationInt = Integer.parseInt(minuteDuration);
 
-                LocalTime duracion = LocalTime.of(hourDurationInt, minuteDurationInt);
-
                 if (hourDurationInt <= 0 && minuteDurationInt <= 0) {
                     return new Response("Invalid flight duration. The duration has to be longer than 00:00", Status.BAD_REQUEST);
                 }
@@ -134,8 +147,6 @@ public class FlightController {
                 if (scaleID != null) {
                     hourScaleInt = Integer.parseInt(hourScale);
                     minuteScaleInt = Integer.parseInt(minuteScale);
-
-                    LocalTime duracion = LocalTime.of(hourScaleInt, minuteScaleInt);
 
                     if (hourScaleInt <= 0 && minuteScaleInt <= 0) {
                         return new Response("Invalid scale duration. The duration has to be longer than 00:00", Status.BAD_REQUEST);
@@ -173,6 +184,31 @@ public class FlightController {
             return new Response("Unexpected error.", Status.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    public static Response delayFlight(String flightID, String hoursDelay, String minutesDelay){
+        int hDelay, mDelay;
+        
+        // Verificamos que el vuelo exista
+        Flight flight = FlightStorage.getInstance().get(flightID);
+        if(flight == null){
+            return new Response("Flight does not exist", Status.NOT_FOUND);
+        }
+        
+        try{
+            hDelay = Integer.parseInt(hoursDelay);
+        }catch(NumberFormatException e){
+            return new Response("Hours delay must be numeric", Status.BAD_REQUEST);
+        }
+        
+        try{
+            mDelay = Integer.parseInt(minutesDelay);
+        }catch(NumberFormatException e){
+            return new Response("Minutes delay must be numeric", Status.BAD_REQUEST);
+        }
+        
+        flight.delay(hDelay, mDelay);
+        return new Response("Flight delayed succesfully", Status.OK);
+    }
 
     public static Response getFlights() {
         try {
@@ -183,11 +219,11 @@ public class FlightController {
             }
 
             ArrayList<Flight> lista = FlightStorage.getInstance().getLista();
-            
-            if(lista.isEmpty()){
+
+            if (lista.isEmpty()) {
                 return new Response("There are no flights in the storage", Status.NO_CONTENT);
             }
-            
+
             ArrayList<Flight> copia = new ArrayList<>();
 
             for (Flight flight : lista) {
@@ -265,14 +301,12 @@ public class FlightController {
                 flightRow = new Object[]{
                     flight.getId(),
                     flight.getDepartureDate().toLocalDate(),
-                    flight.getDepartureDate().plusHours(flight.getHoursDurationArrival()).plusMinutes(flight.getMinutesDurationArrival()).toLocalDate(),
-                };
+                    flight.getDepartureDate().plusHours(flight.getHoursDurationArrival()).plusMinutes(flight.getMinutesDurationArrival()).toLocalDate(),};
             }
             return new Response("Passenger flight information got succesfully", Status.OK, flightRow);
         } catch (CloneNotSupportedException e) {
             return new Response("Internal error getting passenger flight information", Status.INTERNAL_SERVER_ERROR);
         }
     }
-    
-    
+
 }

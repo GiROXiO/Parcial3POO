@@ -65,8 +65,25 @@ public class PlaneController {
             if (airline.isBlank()) {
                 return new Response("Airline field must be filled in.", Status.BAD_REQUEST);
             }
-             
             
+            //Comprobamos que el nombre del fabricante no contenga numeros
+            for (char c : brand.toCharArray()) {
+                try {
+                    Integer.valueOf(String.valueOf(c));
+                    return new Response("Brand name must be valid", Status.BAD_REQUEST);
+                } catch (NumberFormatException e) {
+                }
+            }
+            
+            //Comprobamos que el nombre de la aerolinea no contenga numeros
+            for (char c : airline.toCharArray()) {
+                try {
+                    Integer.valueOf(String.valueOf(c));
+                    return new Response("Airline name must be valid", Status.BAD_REQUEST);
+                } catch (NumberFormatException e) {
+                }
+            }
+                 
             // Se verifica si Max Capacity es un valor numérico
             try {
                 maxCapacityInt = Integer.parseInt(maxCapacity);

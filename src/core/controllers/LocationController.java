@@ -90,6 +90,33 @@ public class LocationController {
             } catch (Exception e) {
                 return new Response("All fields must be filled in.", Status.BAD_REQUEST);
             }
+            
+            //Comprobamos que el nombre del aeropuerto no contenga numeros
+            for (char c : name.toCharArray()) {
+                try {
+                    Integer.valueOf(String.valueOf(c));
+                    return new Response("Airport name must be valid", Status.BAD_REQUEST);
+                } catch (NumberFormatException e) {
+                }
+            }
+            
+            //Comprobamos que el nombre de la ciudad no contenga numeros
+            for (char c : city.toCharArray()) {
+                try {
+                    Integer.valueOf(String.valueOf(c));
+                    return new Response("Airport city name must be valid", Status.BAD_REQUEST);
+                } catch (NumberFormatException e) {
+                }
+            }
+            
+            //Comprobamos que el nombre del pais no contenga numeros
+            for (char c : country.toCharArray()) {
+                try {
+                    Integer.valueOf(String.valueOf(c));
+                    return new Response("Airport country name must be valid", Status.BAD_REQUEST);
+                } catch (NumberFormatException e) {
+                }
+            }
 
             try {
 
