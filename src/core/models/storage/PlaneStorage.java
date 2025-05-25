@@ -7,17 +7,16 @@ package core.models.storage;
 import core.models.plane.Plane;
 import core.models.storage.utils.JsonPath;
 import core.models.storage.utils.JsonStorage;
-import java.util.Collections;
-import java.util.Comparator;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 public class PlaneStorage extends Storage<Plane>{
      private static PlaneStorage instance;
-
+     public JsonTransformer<Plane> transformer;
+     
     private PlaneStorage() {
         super(JsonPath.PLANES.getPath());
+        this.transformer = new PlaneJSON();
     }
     
     public static PlaneStorage getInstance(){
@@ -54,13 +53,7 @@ public class PlaneStorage extends Storage<Plane>{
         try {
             JSONArray array = JsonStorage.readJson(path);
             for (int i = 0; i < array.length(); i++) {
-                JSONObject obj = array.getJSONObject(i);
-                String id = obj.getString("id");
-                String brand = obj.getString("brand");
-                String model = obj.getString("model");
-                int maxCapacity = obj.getInt("maxCapacity");
-                String airline = obj.getString("airline");
-                Plane plane = new Plane(id, brand, model, maxCapacity, airline);           
+                Plane plane = transformer.fromJson(array.getJSONObject(i));
                 this.add(plane);
             }
             

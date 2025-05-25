@@ -5,20 +5,19 @@
 package core.models.storage;
 
 import core.models.passenger.Passenger;
-import core.models.passenger.PhoneNumber;
 import core.models.storage.utils.JsonPath;
 import core.models.storage.utils.JsonStorage;
-import java.time.LocalDate;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 public class PassengerStorage extends Storage<Passenger> {
 
     private static PassengerStorage instance;
+    private JsonTransformer<Passenger> transformer;
 
     private PassengerStorage() {
         super(JsonPath.PASSENGERS.getPath());
+        this.transformer = new PassengerJSON();
     }
 
     public static PassengerStorage getInstance() {
@@ -59,16 +58,7 @@ public class PassengerStorage extends Storage<Passenger> {
         try {
             JSONArray array = JsonStorage.readJson(path);
             for (int i = 0; i < array.length(); i++) {
-                JSONObject obj = array.getJSONObject(i);
-                long id = obj.getLong("id");
-                String firstname = obj.getString("firstname");
-                String lastname = obj.getString("lastname");
-                LocalDate birthDate = LocalDate.parse(obj.getString("birthDate"));
-                int countryPhoneCode = obj.getInt("countryPhoneCode");
-                long phone = obj.getLong("phone");
-                PhoneNumber phoneNumber = new PhoneNumber(countryPhoneCode, phone);
-                String country = obj.getString("country");
-                Passenger passenger = new Passenger(id, firstname, lastname, birthDate, phoneNumber, country);
+                Passenger passenger = transformer.fromJson(array.getJSONObject(i));
                 this.add(passenger);
             }
             
