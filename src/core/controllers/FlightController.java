@@ -82,7 +82,7 @@ public class FlightController {
 
             // Verificar si el scale location existe siempre y cuando no sea nulo
             try {
-                if (scaleID != null) {
+                if (!(scaleID.equalsIgnoreCase("Location"))) {
                     if (locationStorage.get(scaleID) == null) {
                         return new Response("Scale location ID does not exist.", Status.BAD_REQUEST);
                     }
@@ -101,7 +101,7 @@ public class FlightController {
 
             //Validando que id de salida, llegada y escala (si existe) no sean iguales
             try {
-                if (scaleID != null) {
+                if (!(scaleID.equalsIgnoreCase("Location"))) {
                     if (salidaID.equalsIgnoreCase(llegadaID) || salidaID.equalsIgnoreCase(scaleID) || llegadaID.equalsIgnoreCase(scaleID)) {
                         return new Response("Locations must be different", Status.BAD_REQUEST);
                     }
@@ -112,6 +112,29 @@ public class FlightController {
                 }
             } catch (Exception e) {
                 return new Response("Locations must be different", Status.BAD_REQUEST);
+            }
+
+            //Validando que si no hay escala, no haya tiempo de escala
+            if (scaleID.equalsIgnoreCase("Location")) {
+                try {
+                    int h = Integer.parseInt(hourScale);
+                    
+                    if(h>0){
+                        return new Response("There must no be scale hours on a non-stop flight", Status.BAD_REQUEST);
+                    }
+                } catch (NumberFormatException e) {
+                    hourScale = "0";
+                }
+                
+                try {
+                    int m = Integer.parseInt(minuteScale);
+                    
+                    if(m>0){
+                        return new Response("There must no be scale minutes on a non-stop flight", Status.BAD_REQUEST);
+                    }
+                } catch (NumberFormatException e) {
+                    minuteScale = "0";
+                }
             }
 
             // Validando fecha de salida
@@ -145,7 +168,7 @@ public class FlightController {
 
             // Validando la duración del scale si es que existe
             try {
-                if (scaleID != null) {
+                if (!(scaleID.equalsIgnoreCase("Location"))) {
                     hourScaleInt = Integer.parseInt(hourScale);
                     minuteScaleInt = Integer.parseInt(minuteScale);
 
@@ -163,7 +186,7 @@ public class FlightController {
 
             LocalDateTime departureDate = LocalDateTime.of(yearInt, monthInt, dayInt, hourInt, minuteInt);
 
-            if (scaleID == null) {
+            if (scaleID.equalsIgnoreCase("Location")) {
                 if (!flightStorage.add(new Flight(id, plane, departureLocation, null, arrivalLocation, departureDate, hourDurationInt, minuteDurationInt, 0, 0))) {
                     return new Response("A flight with that id already exists", Status.BAD_REQUEST);
                 } else {
@@ -185,38 +208,38 @@ public class FlightController {
             return new Response("Unexpected error.", Status.INTERNAL_SERVER_ERROR);
         }
     }
-    
-    public static Response delayFlight(String flightID, String hoursDelay, String minutesDelay){
+
+    public static Response delayFlight(String flightID, String hoursDelay, String minutesDelay) {
         int hDelay, mDelay;
-        
+
         // Verificamos que el vuelo exista
         Flight flight = FlightStorage.getInstance().get(flightID);
-        if(flight == null){
+        if (flight == null) {
             return new Response("Flight does not exist", Status.NOT_FOUND);
         }
-        
-        try{
+
+        try {
             hDelay = Integer.parseInt(hoursDelay);
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             return new Response("Hours delay must be numeric", Status.BAD_REQUEST);
         }
-        
-        try{
+
+        try {
             mDelay = Integer.parseInt(minutesDelay);
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             return new Response("Minutes delay must be numeric", Status.BAD_REQUEST);
         }
-        
+
         flight.delay(hDelay, mDelay);
         return new Response("Flight delayed succesfully", Status.OK);
     }
-    
-    public static Response loadFlights(){
-        try{
+
+    public static Response loadFlights() {
+        try {
             FlightStorage.getInstance().load();
             return new Response("Flights loaded succesfully in the system", Status.CREATED);
-        }catch(Exception e){
-            return new Response ("Internal error loading flights in the system", Status.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            return new Response("Internal error loading flights in the system", Status.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -238,7 +261,7 @@ public class FlightController {
             Collections.sort(copia, Comparator.comparing(flight -> {
                 return flight.getDepartureDate();
             }));
-            
+
             return new Response("Flights information got succesfully", Status.OK, copia);
         } catch (CloneNotSupportedException e) {
             return new Response("Internal error loading flights information", Status.INTERNAL_SERVER_ERROR);

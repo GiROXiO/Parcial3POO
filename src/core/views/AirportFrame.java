@@ -66,7 +66,6 @@ public class AirportFrame extends javax.swing.JFrame {
         }
     }
 
-    
     private void generateDays() {
         for (int i = 1; i < 32; i++) {
             PR_DayComboBox.addItem("" + i);
@@ -92,47 +91,47 @@ public class AirportFrame extends javax.swing.JFrame {
             DF_MinuteComboBox.addItem("" + i);
         }
     }
-    
-    private void loadLocations(){
+
+    private void loadLocations() {
         Response response = LocationController.loadLocations();
-        if(response.getStatus()>=500){
+        if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
-        }else if(response.getStatus()>=400){
+        } else if (response.getStatus() >= 400) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Response message", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    
-    private void loadPlanes(){
+
+    private void loadPlanes() {
         Response response = PlaneController.loadPlanes();
-        if(response.getStatus()>=500){
+        if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
-        }else if(response.getStatus()>=400){
+        } else if (response.getStatus() >= 400) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Response message", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    
-    private void loadFlights(){
+
+    private void loadFlights() {
         Response response = FlightController.loadFlights();
-        if(response.getStatus()>=500){
+        if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
-        }else if(response.getStatus()>=400){
+        } else if (response.getStatus() >= 400) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Response message", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    
-    private void loadPassengers(){
+
+    private void loadPassengers() {
         Response response = PassengerController.loadPassengers();
-        if(response.getStatus()>=500){
+        if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
-        }else if(response.getStatus()>=400){
+        } else if (response.getStatus() >= 400) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Response message", JOptionPane.INFORMATION_MESSAGE);
         }
     }
@@ -361,8 +360,7 @@ public class AirportFrame extends javax.swing.JFrame {
     private void showPassengerFlights(String passengerId) {
         DefaultTableModel model = (DefaultTableModel) SMFlights_Table.getModel();
         model.setRowCount(0);
-        Long id = Long.valueOf(passengerId);
-        Response response = PassengerController.getPassengerFlights(id);
+        Response response = PassengerController.getPassengerFlights(passengerId);
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
         } else if (response.getStatus() >= 400) {
@@ -1883,66 +1881,36 @@ public class AirportFrame extends javax.swing.JFrame {
         String hoursDurationsScale = FR_D2HourComboBox.getItemAt(FR_D2HourComboBox.getSelectedIndex());
         String minutesDurationsScale = FR_D2MinuteComboBox.getItemAt(FR_D2MinuteComboBox.getSelectedIndex());
 
-        if (scaleLocationId.equals("Location")) {
-            Response response = FlightController.FlightRegistration(id, planeId, departureLocationId, arrivalLocationId, null, year, month, day, hour, minutes, hoursDurationsArrival, minutesDurationsArrival, "0", "0");
-            if (response.getStatus() >= 500) {
-                JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
-            } else if (response.getStatus() >= 400) {
-                JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
-                DF_IdComboBox.removeAllItems();
-                ATF_FlightComboBox.removeAllItems();
-                DF_IdComboBox.addItem("ID");
-                ATF_FlightComboBox.addItem("Flight");
-                this.generateFlights();
-
-                FR_IdTextField.setText("");
-                FR_PlaneComboBox.setSelectedIndex(0);
-                FR_DepartureLocationComboBox.setSelectedIndex(0);
-                FR_ArrivalLocationComboBox.setSelectedIndex(0);
-                FR_ScaleLocationComboBox.setSelectedIndex(0);
-                FR_YearTextField.setText("");
-                FR_MonthComboBox.setSelectedIndex(0);
-                FR_DayComboBox.setSelectedIndex(0);
-                FR_DDHourComboBox.setSelectedIndex(0);
-                FR_DDMinuteComboBox.setSelectedIndex(0);
-                FR_D1HourComboBox.setSelectedIndex(0);
-                FR_D1MinuteComboBox.setSelectedIndex(0);
-                FR_D2HourComboBox.setSelectedIndex(0);
-                FR_D2MinuteComboBox.setSelectedIndex(0);
-                
-            }
+        Response response = FlightController.FlightRegistration(id, planeId, departureLocationId, arrivalLocationId, scaleLocationId, year, month, day, hour, minutes, hoursDurationsArrival, minutesDurationsArrival, hoursDurationsScale, minutesDurationsScale);
+        if (response.getStatus() >= 500) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        } else if (response.getStatus() >= 400) {
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
         } else {
-            Response response = FlightController.FlightRegistration(id, planeId, departureLocationId, arrivalLocationId, scaleLocationId, year, month, day, hour, minutes, hoursDurationsArrival, minutesDurationsArrival, hoursDurationsScale, minutesDurationsScale);
-            if (response.getStatus() >= 500) {
-                JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
-            } else if (response.getStatus() >= 400) {
-                JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
-                DF_IdComboBox.removeAllItems();
-                ATF_FlightComboBox.removeAllItems();
-                DF_IdComboBox.addItem("ID");
-                ATF_FlightComboBox.addItem("Flight");
-                this.generateFlights();
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+            DF_IdComboBox.removeAllItems();
+            ATF_FlightComboBox.removeAllItems();
+            DF_IdComboBox.addItem("ID");
+            ATF_FlightComboBox.addItem("Flight");
+            this.generateFlights();
 
-                FR_IdTextField.setText("");
-                FR_PlaneComboBox.setSelectedIndex(0);
-                FR_DepartureLocationComboBox.setSelectedIndex(0);
-                FR_ArrivalLocationComboBox.setSelectedIndex(0);
-                FR_ScaleLocationComboBox.setSelectedIndex(0);
-                FR_YearTextField.setText("");
-                FR_MonthComboBox.setSelectedIndex(0);
-                FR_DayComboBox.setSelectedIndex(0);
-                FR_DDHourComboBox.setSelectedIndex(0);
-                FR_DDMinuteComboBox.setSelectedIndex(0);
-                FR_D1HourComboBox.setSelectedIndex(0);
-                FR_D1MinuteComboBox.setSelectedIndex(0);
-                FR_D2HourComboBox.setSelectedIndex(0);
-                FR_D2MinuteComboBox.setSelectedIndex(0);
-            }
+            FR_IdTextField.setText("");
+            FR_PlaneComboBox.setSelectedIndex(0);
+            FR_DepartureLocationComboBox.setSelectedIndex(0);
+            FR_ArrivalLocationComboBox.setSelectedIndex(0);
+            FR_ScaleLocationComboBox.setSelectedIndex(0);
+            FR_YearTextField.setText("");
+            FR_MonthComboBox.setSelectedIndex(0);
+            FR_DayComboBox.setSelectedIndex(0);
+            FR_DDHourComboBox.setSelectedIndex(0);
+            FR_DDMinuteComboBox.setSelectedIndex(0);
+            FR_D1HourComboBox.setSelectedIndex(0);
+            FR_D1MinuteComboBox.setSelectedIndex(0);
+            FR_D2HourComboBox.setSelectedIndex(0);
+            FR_D2MinuteComboBox.setSelectedIndex(0);
+
         }
+
     }//GEN-LAST:event_FR_CreateButtonActionPerformed
 
     private void UF_UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UF_UpdateActionPerformed
@@ -2002,7 +1970,7 @@ public class AirportFrame extends javax.swing.JFrame {
         String flightId = DF_IdComboBox.getItemAt(DF_IdComboBox.getSelectedIndex());
         String hours = DF_HourComboBox.getItemAt(DF_HourComboBox.getSelectedIndex());
         String minutes = DF_MinuteComboBox.getItemAt(DF_MinuteComboBox.getSelectedIndex());
-        
+
         Response response = FlightController.delayFlight(flightId, hours, minutes);
         if (response.getStatus() >= 500) {
             JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
@@ -2020,9 +1988,7 @@ public class AirportFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             String id = userSelect.getSelectedItem().toString();
-            if (!id.equals(userSelect.getItemAt(0))) {
-                this.showPassengerFlights(id);
-            }
+            this.showPassengerFlights(id);
         } catch (Exception e) {
         }
     }//GEN-LAST:event_SMFlights_RefreshButtonActionPerformed

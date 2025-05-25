@@ -341,14 +341,15 @@ public class PassengerController {
         }
     }
 
-    public static Response getPassengerFlights(long id) {
+    public static Response getPassengerFlights(String id) {
         try {
-            boolean sw = PassengerStorage.getInstance().load();
-
-            if (!sw) {
-                return new Response("Internal error loading passengers", Status.INTERNAL_SERVER_ERROR);
+            long passengerID;
+            try{
+                passengerID = Long.parseLong(id);
+            }catch(NumberFormatException e){
+                return new Response("User ID not selected", Status.BAD_REQUEST);
             }
-
+            
             ArrayList<Passenger> lista = PassengerStorage.getInstance().getLista();
 
             if (lista.isEmpty()) {
@@ -358,7 +359,7 @@ public class PassengerController {
             ArrayList<Flight> passengerFlights = new ArrayList<>();
 
             for (Passenger passenger : lista) {
-                if (passenger.getId() == id) {
+                if (passenger.getId() == passengerID) {
                     passengerFlights = passenger.clone().getFlights();
                 }
             }
