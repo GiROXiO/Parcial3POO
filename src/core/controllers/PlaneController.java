@@ -123,7 +123,7 @@ public class PlaneController {
             
             ArrayList<Plane> copia = new ArrayList<>();
             for (Plane plane : lista) {
-                copia.add(plane.clone());
+                copia.add(plane.clonePlane());
             }
 
             Collections.sort(copia, Comparator.comparing(plane -> {
@@ -131,7 +131,7 @@ public class PlaneController {
             }));
             
             return new Response("Planes information got succesfully", Status.OK, copia);
-        } catch (CloneNotSupportedException e) {
+        } catch (Exception e) {
             return new Response("Error interno obteniendo los aviones", Status.INTERNAL_SERVER_ERROR);
         }
     }
@@ -141,9 +141,9 @@ public class PlaneController {
             if (!(obj instanceof Plane)) {
                 return new Response("The selection is not a plane", Status.BAD_REQUEST);
             }
-            String id = ((Plane) obj).clone().getId();
+            String id = ((Plane) obj).clonePlane().getId();
             return new Response("Plane ID got succesfully", Status.OK, id);
-        } catch (CloneNotSupportedException e) {
+        } catch (Exception e) {
             return new Response("Internal error getting plane ID", Status.INTERNAL_SERVER_ERROR);
         }
     }
@@ -153,7 +153,7 @@ public class PlaneController {
             if (!(obj instanceof Plane)) {
                 return new Response("The selection is not a plane", Status.BAD_REQUEST);
             }
-            Plane plane = ((Plane) obj).clone();
+            Plane plane = ((Plane) obj).clonePlane();
             Object[] planeRow = new Object[]{
                 plane.getId(),
                 plane.getBrand(),
@@ -163,7 +163,7 @@ public class PlaneController {
                 plane.getNumFlights()
             };
             return new Response("Plane information got succesfully", Status.OK, planeRow);
-        } catch (CloneNotSupportedException e) {
+        } catch (Exception e) {
             return new Response("Internal error getting plane information", Status.INTERNAL_SERVER_ERROR);
         }
     }
