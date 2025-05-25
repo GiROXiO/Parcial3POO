@@ -8,6 +8,9 @@
             <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/plane/Plane.java</file>
             <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/controllers/PlaneController.java</file>
             <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/controllers/PassengerController.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/storage/Passenger/PassengerJSON.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/storage/Passenger/PassengerStorage.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/passenger/PhoneNumber.java</file>
         </group>
     </open-files>
 </project-private>

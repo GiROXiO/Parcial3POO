@@ -335,7 +335,7 @@ public class PassengerController {
                 passenger.getFullName(),
                 passenger.getBirthDate(),
                 passenger.calculateAge(),
-                passenger.getPhoneNumber(),
+                passenger.getPhoneNumber().getFullPhone(),
                 passenger.getCountry(),
                 passenger.getNumFlights()
             };
