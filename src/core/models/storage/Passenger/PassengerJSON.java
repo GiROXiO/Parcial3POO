@@ -1,7 +1,8 @@
-package core.models.storage;
+package core.models.storage.Passenger;
 
 import core.models.passenger.Passenger;
 import core.models.passenger.PhoneNumber;
+import core.models.storage.JsonTransformer;
 import java.time.LocalDate;
 import org.json.JSONObject;
 

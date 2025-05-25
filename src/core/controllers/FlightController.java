@@ -7,7 +7,7 @@ import core.models.location.Location;
 import core.models.plane.Plane;
 import core.models.storage.FlightStorage;
 import core.models.storage.LocationStorage;
-import core.models.storage.PlaneStorage;
+import core.models.storage.Plane.PlaneStorage;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;

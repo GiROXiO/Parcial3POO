@@ -1,6 +1,7 @@
-package core.models.storage;
+package core.models.storage.Plane;
 
 import core.models.plane.Plane;
+import core.models.storage.JsonTransformer;
 import org.json.JSONObject;
 
 public class PlaneJSON implements JsonTransformer<Plane>{

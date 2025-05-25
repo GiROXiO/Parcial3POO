@@ -6,7 +6,7 @@ import core.models.flight.Flight;
 import core.models.passenger.Passenger;
 import core.models.passenger.PhoneNumber;
 import core.models.storage.FlightStorage;
-import core.models.storage.PassengerStorage;
+import core.models.storage.Passenger.PassengerStorage;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
