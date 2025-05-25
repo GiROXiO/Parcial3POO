@@ -257,29 +257,35 @@ public class PassengerController {
             if (flight == null) {
                 return new Response("Flight ID not selected", Status.BAD_REQUEST);
             }
-
+            
+            
             for(Flight passsengerFlight : passenger.getFlights())
             {
-                if (flight == passsengerFlight)
+                if (flight==passsengerFlight)
                 {
                     return new Response("Passenger has already registered for that flight.", Status.BAD_REQUEST);
                 }
             }
-
+            
+            passenger.addFlight(flight);
+            flight.addPassenger(passenger);
             return new Response("Flight succesfully added", Status.OK);
         } catch (Exception e) {
             return new Response("Unexpected error", Status.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    public static Response loadPassengers(){
+        try{
+            PassengerStorage.getInstance().load();
+            return new Response("Passengers loaded succesfully in the system", Status.CREATED);
+        }catch(Exception e){
+            return new Response ("Internal error loading passengers in the system", Status.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     public static Response getPassengers() {
         try {
-            boolean sw = PassengerStorage.getInstance().load();
-
-            if (!sw) {
-                return new Response("Internal error loading passengers information", Status.INTERNAL_SERVER_ERROR);
-            }
-
             ArrayList<Passenger> lista = PassengerStorage.getInstance().getLista();
 
             if (lista.isEmpty()) {
@@ -292,7 +298,11 @@ public class PassengerController {
                 copia.add(passenger.clone());
             }
 
-            return new Response("Passengers information loaded succesfully in the system", Status.OK, copia);
+            Collections.sort(copia, Comparator.comparing(passenger -> {
+                return passenger.getId();
+            }));
+            
+            return new Response("Passengers information got succesfully", Status.OK, copia);
         } catch (CloneNotSupportedException e) {
             return new Response("Internal error loading passengers information", Status.INTERNAL_SERVER_ERROR);
         }

@@ -24,7 +24,7 @@ public abstract class Storage<T>{
     public abstract T get(String id);
     public abstract boolean upd(int id);
     public abstract boolean load();
-
+  
     public ArrayList<T> getLista() {
         return lista;
     }

@@ -69,9 +69,7 @@ public class LocationStorage extends Storage<Location> {
                 Location location = new Location(id, airportName, airportCity, airportCountry, airportLatitude, airportLongitude);
                 this.add(location);
             }
-            Collections.sort(this.lista, Comparator.comparing(location -> {
-                return location.getAirportId();
-            }));
+            
             return true;
         } catch (JSONException | NumberFormatException e) {
             System.out.println("Error: " + e);

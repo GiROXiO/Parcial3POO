@@ -5,6 +5,8 @@ import core.controllers.utils.Status;
 import core.models.plane.Plane;
 import core.models.storage.PlaneStorage;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class PlaneController {
 
@@ -101,15 +103,18 @@ public class PlaneController {
         }
 
     }
+    
+    public static Response loadPlanes(){
+        try{
+            PlaneStorage.getInstance().load();
+            return new Response("Planes loaded succesfully in the system", Status.CREATED);
+        }catch(Exception e){
+            return new Response ("Internal error loading planes in the system", Status.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     public static Response getPlanes(){
         try {
-            boolean sw = PlaneStorage.getInstance().load();
-
-            if (!sw) {
-                return new Response("Internal error loading planes", Status.INTERNAL_SERVER_ERROR);
-            }
-
             ArrayList<Plane> lista = PlaneStorage.getInstance().getLista();
             
             if(lista.isEmpty()){
@@ -121,7 +126,11 @@ public class PlaneController {
                 copia.add(plane.clone());
             }
 
-            return new Response("Planes information loaded succesfully in the system", Status.OK, copia);
+            Collections.sort(copia, Comparator.comparing(plane -> {
+                return plane.getId();
+            }));
+            
+            return new Response("Planes information got succesfully", Status.OK, copia);
         } catch (CloneNotSupportedException e) {
             return new Response("Error interno obteniendo los aviones", Status.INTERNAL_SERVER_ERROR);
         }

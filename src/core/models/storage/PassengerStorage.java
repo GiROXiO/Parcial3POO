@@ -71,9 +71,7 @@ public class PassengerStorage extends Storage<Passenger> {
                 Passenger passenger = new Passenger(id, firstname, lastname, birthDate, countryPhoneCode, phone, country);
                 this.add(passenger);
             }
-            Collections.sort(this.lista, Comparator.comparing(passenger -> {
-                return passenger.getId();
-            }));
+            
             return true;
         } catch (JSONException | NumberFormatException e) {
             System.out.println("Error: " + e);

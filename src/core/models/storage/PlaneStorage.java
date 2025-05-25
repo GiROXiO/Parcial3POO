@@ -63,9 +63,7 @@ public class PlaneStorage extends Storage<Plane>{
                 Plane plane = new Plane(id, brand, model, maxCapacity, airline);           
                 this.add(plane);
             }
-            Collections.sort(this.lista, Comparator.comparing(plane -> {
-                return plane.getId();
-            }));
+            
             return true;
         } catch (JSONException | NumberFormatException e) {
             return false;

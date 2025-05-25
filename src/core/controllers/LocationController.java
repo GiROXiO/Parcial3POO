@@ -5,6 +5,8 @@ import core.controllers.utils.Status;
 import core.models.location.Location;
 import core.models.storage.LocationStorage;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class LocationController {
 
@@ -135,18 +137,21 @@ public class LocationController {
 
     }
 
+    public static Response loadLocations(){
+        try{
+            LocationStorage.getInstance().load();
+            return new Response("Locations loaded succesfully in the system", Status.CREATED);
+        }catch(Exception e){
+            return new Response ("Internal error loading locations in the system", Status.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
     public static Response getLocations() {
         try {
-            boolean sw = LocationStorage.getInstance().load();
-
-            if (!sw) {
-                return new Response("Internal error loading locations", Status.INTERNAL_SERVER_ERROR);
-            }
-
             ArrayList<Location> lista = LocationStorage.getInstance().getLista();
             
             if(lista.isEmpty()){
-                return new Response("there are no locations in the storage", Status.NO_CONTENT);
+                return new Response("There are no locations in the storage", Status.NO_CONTENT);
             }
             
             ArrayList<Location> copia = new ArrayList<>();
@@ -154,7 +159,11 @@ public class LocationController {
                 copia.add(location.clone());
             }
 
-            return new Response("Locations information loaded succesfully in the system", Status.OK, copia);
+            Collections.sort(copia, Comparator.comparing(location -> {
+                return location.getAirportId();
+            }));
+            
+            return new Response("Locations information got succesfully", Status.OK, copia);
         } catch (CloneNotSupportedException e) {
             return new Response("Internal error loading locations information", Status.INTERNAL_SERVER_ERROR);
         }

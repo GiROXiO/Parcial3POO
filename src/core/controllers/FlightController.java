@@ -9,8 +9,9 @@ import core.models.storage.FlightStorage;
 import core.models.storage.LocationStorage;
 import core.models.storage.PlaneStorage;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class FlightController {
 
@@ -209,14 +210,18 @@ public class FlightController {
         flight.delay(hDelay, mDelay);
         return new Response("Flight delayed succesfully", Status.OK);
     }
+    
+    public static Response loadFlights(){
+        try{
+            FlightStorage.getInstance().load();
+            return new Response("Flights loaded succesfully in the system", Status.CREATED);
+        }catch(Exception e){
+            return new Response ("Internal error loading flights in the system", Status.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     public static Response getFlights() {
         try {
-            boolean sw = FlightStorage.getInstance().load();
-
-            if (!sw) {
-                return new Response("Internal error loading flights information", Status.INTERNAL_SERVER_ERROR);
-            }
 
             ArrayList<Flight> lista = FlightStorage.getInstance().getLista();
 
@@ -230,7 +235,11 @@ public class FlightController {
                 copia.add(flight.clone());
             }
 
-            return new Response("Flights information loaded succesfully in the system", Status.OK, copia);
+            Collections.sort(copia, Comparator.comparing(flight -> {
+                return flight.getDepartureDate();
+            }));
+            
+            return new Response("Flights information got succesfully", Status.OK, copia);
         } catch (CloneNotSupportedException e) {
             return new Response("Internal error loading flights information", Status.INTERNAL_SERVER_ERROR);
         }

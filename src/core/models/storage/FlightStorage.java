@@ -100,9 +100,7 @@ public class FlightStorage extends Storage<Flight> {
                     this.add(flight);
                 }
             }
-            Collections.sort(this.lista, Comparator.comparing(flight -> {
-                return flight.getDepartureDate();
-            }));
+            
             return true;
         } catch (JSONException | NumberFormatException e) {
             System.out.println("Error: " + e);

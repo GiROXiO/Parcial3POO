@@ -10,7 +10,6 @@ import core.controllers.LocationController;
 import core.controllers.PassengerController;
 import core.controllers.utils.Response;
 import java.awt.Color;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -39,14 +38,14 @@ public class AirportFrame extends javax.swing.JFrame {
         this.generateDays();
         this.generateHours();
         this.generateMinutes();
+        this.loadLocations();
+        this.loadPlanes();
+        this.loadFlights();
+        this.loadPassengers();
         this.generateLocations();
         this.generatePlanes();
         this.generateFlights();
         this.generatePassengers();
-        this.showAllFlights();
-        this.showAllPassengers();
-        this.showAllPlanes();
-        this.showAllLocations();
         this.blockPanels();
     }
 
@@ -67,6 +66,7 @@ public class AirportFrame extends javax.swing.JFrame {
         }
     }
 
+    
     private void generateDays() {
         for (int i = 1; i < 32; i++) {
             PR_DayComboBox.addItem("" + i);
@@ -90,6 +90,50 @@ public class AirportFrame extends javax.swing.JFrame {
             FR_D1MinuteComboBox.addItem("" + i);
             FR_D2MinuteComboBox.addItem("" + i);
             DF_MinuteComboBox.addItem("" + i);
+        }
+    }
+    
+    private void loadLocations(){
+        Response response = LocationController.loadLocations();
+        if(response.getStatus()>=500){
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        }else if(response.getStatus()>=400){
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        }else{
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response message", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+    
+    private void loadPlanes(){
+        Response response = PlaneController.loadPlanes();
+        if(response.getStatus()>=500){
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        }else if(response.getStatus()>=400){
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        }else{
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response message", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+    
+    private void loadFlights(){
+        Response response = FlightController.loadFlights();
+        if(response.getStatus()>=500){
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        }else if(response.getStatus()>=400){
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        }else{
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response message", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+    
+    private void loadPassengers(){
+        Response response = PassengerController.loadPassengers();
+        if(response.getStatus()>=500){
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.ERROR_MESSAGE);
+        }else if(response.getStatus()>=400){
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Error " + response.getStatus(), JOptionPane.WARNING_MESSAGE);
+        }else{
+            JOptionPane.showMessageDialog(null, response.getMessage(), "Response message", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -117,7 +161,7 @@ public class AirportFrame extends javax.swing.JFrame {
                     FR_ScaleLocationComboBox.addItem((String) airportId.getObject());
                 }
             }
-            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Locations ID loaded succesfully in ComboBox", "Response Message", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -143,7 +187,7 @@ public class AirportFrame extends javax.swing.JFrame {
                     FR_PlaneComboBox.addItem((String) planeId.getObject());
                 }
             }
-            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Planes ID loaded succesfully in ComboBox", "Response Message", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -170,7 +214,7 @@ public class AirportFrame extends javax.swing.JFrame {
                     ATF_FlightComboBox.addItem((String) flightId.getObject());
                 }
             }
-            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Flights ID loaded succesfully in ComboBox", "Response Message", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -194,7 +238,7 @@ public class AirportFrame extends javax.swing.JFrame {
                     userSelect.addItem((String) passengerId.getObject());
                 }
             }
-            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Passengers ID loaded succesfully in ComboBox", "Response Message", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -223,7 +267,7 @@ public class AirportFrame extends javax.swing.JFrame {
                     model.addRow(row);
                 }
             }
-            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Flights information loaded succesfully in table", "Response Message", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -252,7 +296,7 @@ public class AirportFrame extends javax.swing.JFrame {
                     model.addRow(row);
                 }
             }
-            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Passengers information loaded succesfully in table", "Response Message", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -281,7 +325,7 @@ public class AirportFrame extends javax.swing.JFrame {
                     model.addRow(row);
                 }
             }
-            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Planes information loaded succesfully in table", "Response Message", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -310,7 +354,7 @@ public class AirportFrame extends javax.swing.JFrame {
                     model.addRow(row);
                 }
             }
-            JOptionPane.showMessageDialog(null, response.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Locations information loaded succesfully in table", "Response Message", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -338,9 +382,9 @@ public class AirportFrame extends javax.swing.JFrame {
                 } else {
                     Object[] row = (Object[]) flight.getObject();
                     model.addRow(row);
-                    JOptionPane.showMessageDialog(null, flight.getMessage(), "Response Message", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
+            JOptionPane.showMessageDialog(null, "Passenger flights loaded succesfully in table", "Response Message", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
