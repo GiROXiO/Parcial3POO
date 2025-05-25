@@ -6,39 +6,32 @@ package core.models.passenger;
 
 import core.models.flight.Flight;
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.ArrayList;
 
 /**
  *
  * @author edangulo
  */
-public class Passenger implements Cloneable{
+public class Passenger implements CloneablePassenger{
     
     private final long id;
     private String firstname;
     private String lastname;
     private LocalDate birthDate;
-    private int countryPhoneCode;
-    private long phone;
+    private PhoneNumberInterface phoneNumber;
     private String country;
-    private ArrayList<Flight> flights;
+    private PFlightManagerInterface flightManager;
 
-    public Passenger(long id, String firstname, String lastname, LocalDate birthDate, int countryPhoneCode, long phone, String country) {
+    public Passenger(long id, String firstname, String lastname, LocalDate birthDate, PhoneNumberInterface phoneNumber, String country) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.birthDate = birthDate;
-        this.countryPhoneCode = countryPhoneCode;
-        this.phone = phone;
+        this.phoneNumber = phoneNumber;
         this.country = country;
-        this.flights = new ArrayList<>();
+        this.flightManager = new PFlightManager(); // Para que inicie vacio
     }
 
-    public void addFlight(Flight flight) {
-        this.flights.add(flight);
-    }
-    
     public long getId() {
         return id;
     }
@@ -55,20 +48,12 @@ public class Passenger implements Cloneable{
         return birthDate;
     }
 
-    public int getCountryPhoneCode() {
-        return countryPhoneCode;
-    }
-
-    public long getPhone() {
-        return phone;
+    public PhoneNumberInterface getPhoneNumber() {
+        return phoneNumber;
     }
 
     public String getCountry() {
         return country;
-    }
-
-    public ArrayList<Flight> getFlights() {
-        return flights;
     }
 
     public void setFirstname(String firstname) {
@@ -83,41 +68,48 @@ public class Passenger implements Cloneable{
         this.birthDate = birthDate;
     }
 
-    public void setCountryPhoneCode(int countryPhoneCode) {
-        this.countryPhoneCode = countryPhoneCode;
-    }
-
-    public void setPhone(long phone) {
-        this.phone = phone;
+    public void setPhoneNumber(PhoneNumberInterface phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public void setCountry(String country) {
         this.country = country;
     }
-    
-    public String getFullname() {
-        return firstname + " " + lastname;
+
+    public void addFlight(Flight flight)
+    {
+        flightManager.addFlight(flight);
     }
     
-    public String generateFullPhone() {
-        return "+" + countryPhoneCode + " " + phone;
+    public int getNumFlights()
+    {
+        return flightManager.getNumFlights();
     }
     
-    public int calculateAge() {
-        return Period.between(birthDate, LocalDate.now()).getYears();
+    public ArrayList<Flight> getFlights()
+    {
+        return flightManager.getFlights();
     }
     
-    public int getNumFlights() {
-        return flights.size();
+    public String getFullName()
+    {
+        return PassengerUtils.getFullName(this);
     }
+    
+    public int calculateAge()
+    {
+        return PassengerUtils.calculateAge(this);
+    }
+    
+    public String getFormattedPhone()
+    {
+        return phoneNumber.getFullPhone();
+    }
+    
     
     @Override
-    public Passenger clone() throws CloneNotSupportedException{
-        return (Passenger) super.clone();
+    public Passenger clonePassenger(){
+        return new Passenger(id, firstname, lastname, birthDate, phoneNumber, country);
     }
 
-    @Override
-    public String toString() {
-        return "Passenger{" + "id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", birthDate=" + birthDate + ", countryPhoneCode=" + countryPhoneCode + ", phone=" + phone + ", country=" + country + '}';
-    }
 }

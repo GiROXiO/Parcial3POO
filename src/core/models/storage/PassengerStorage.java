@@ -5,11 +5,10 @@
 package core.models.storage;
 
 import core.models.passenger.Passenger;
+import core.models.passenger.PhoneNumber;
 import core.models.storage.utils.JsonPath;
 import core.models.storage.utils.JsonStorage;
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.Comparator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,8 +66,9 @@ public class PassengerStorage extends Storage<Passenger> {
                 LocalDate birthDate = LocalDate.parse(obj.getString("birthDate"));
                 int countryPhoneCode = obj.getInt("countryPhoneCode");
                 long phone = obj.getLong("phone");
+                PhoneNumber phoneNumber = new PhoneNumber(countryPhoneCode, phone);
                 String country = obj.getString("country");
-                Passenger passenger = new Passenger(id, firstname, lastname, birthDate, countryPhoneCode, phone, country);
+                Passenger passenger = new Passenger(id, firstname, lastname, birthDate, phoneNumber, country);
                 this.add(passenger);
             }
             

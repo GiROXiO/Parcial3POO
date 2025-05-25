@@ -4,6 +4,7 @@ import core.controllers.utils.Response;
 import core.controllers.utils.Status;
 import core.models.flight.Flight;
 import core.models.passenger.Passenger;
+import core.models.passenger.PhoneNumber;
 import core.models.storage.FlightStorage;
 import core.models.storage.PassengerStorage;
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ public class PassengerController {
 
     public static Response PassengerRegistration(String id, String firstName, String lastName, String yearBirthday, String monthBirthday, String dayBirthday, String phoneCode, String phoneNumber, String country) {
         try {
+            PhoneNumber entPhoneNumber;
             long idL, phoneNumberL;
             int yearInt, monthInt, dayInt, phoneCodeInt;
             LocalDate fecha;
@@ -118,7 +120,9 @@ public class PassengerController {
                 }
             }
             
-            if (!storage.add(new Passenger(Long.parseLong(id), firstName, lastName, fecha, Integer.parseInt(phoneCode), Long.parseLong(phoneNumber), country))) {
+            entPhoneNumber = new PhoneNumber(Integer.parseInt(phoneCode), Long.parseLong(phoneNumber));
+            
+            if (!storage.add(new Passenger(Long.parseLong(id), firstName, lastName, fecha, entPhoneNumber, country))) {
                 return new Response("A passenger with that id already exists", Status.BAD_REQUEST);
             } else {
                 return new Response("Passenger successfully registered", Status.CREATED);
@@ -225,8 +229,8 @@ public class PassengerController {
                 passenger.setFirstname(firstName);
                 passenger.setLastname(lastName);
                 passenger.setBirthDate(fecha);
-                passenger.setCountryPhoneCode(Integer.parseInt(phoneCode));
-                passenger.setPhone(Long.parseLong(phoneNumber));
+                PhoneNumber newPhoneNumber = new PhoneNumber(Integer.parseInt(phoneCode), Long.parseLong(phoneNumber));
+                passenger.setPhoneNumber(newPhoneNumber);
                 passenger.setCountry(country);
 
                 return new Response("Passenger succesfully updated", Status.OK);
@@ -295,7 +299,7 @@ public class PassengerController {
             ArrayList<Passenger> copia = new ArrayList<>();
 
             for (Passenger passenger : lista) {
-                copia.add(passenger.clone());
+                copia.add(passenger.clonePassenger());
             }
 
             Collections.sort(copia, Comparator.comparing(passenger -> {
@@ -303,7 +307,7 @@ public class PassengerController {
             }));
             
             return new Response("Passengers information got succesfully", Status.OK, copia);
-        } catch (CloneNotSupportedException e) {
+        } catch (Exception e) {
             return new Response("Internal error loading passengers information", Status.INTERNAL_SERVER_ERROR);
         }
     }
@@ -313,9 +317,9 @@ public class PassengerController {
             if (!(obj instanceof Passenger)) {
                 return new Response("The selection is not a passenger", Status.BAD_REQUEST);
             }
-            String id = String.valueOf(((Passenger) obj).clone().getId());
+            String id = String.valueOf(((Passenger) obj).clonePassenger().getId());
             return new Response("Passenger ID got succesfully", Status.OK, id);
-        } catch (CloneNotSupportedException e) {
+        } catch (Exception e) {
             return new Response("Internal error getting passenger ID", Status.INTERNAL_SERVER_ERROR);
         }
     }
@@ -325,18 +329,18 @@ public class PassengerController {
             if (!(obj instanceof Passenger)) {
                 return new Response("Item selected is not a passenger", Status.BAD_REQUEST);
             }
-            Passenger passenger = ((Passenger) obj).clone();
+            Passenger passenger = ((Passenger) obj).clonePassenger();
             Object[] passengerRow = new Object[]{
                 passenger.getId(),
-                passenger.getFullname(),
+                passenger.getFullName(),
                 passenger.getBirthDate(),
                 passenger.calculateAge(),
-                passenger.getPhone(),
+                passenger.getPhoneNumber(),
                 passenger.getCountry(),
                 passenger.getNumFlights()
             };
             return new Response("Passenger information got succesfully", Status.OK, passengerRow);
-        } catch (CloneNotSupportedException e) {
+        } catch (Exception e) {
             return new Response("Internal error getting passenger information", Status.INTERNAL_SERVER_ERROR);
         }
     }
@@ -360,7 +364,7 @@ public class PassengerController {
 
             for (Passenger passenger : lista) {
                 if (passenger.getId() == passengerID) {
-                    passengerFlights = passenger.clone().getFlights();
+                    passengerFlights = passenger.getFlights();
                 }
             }
 
@@ -372,7 +376,7 @@ public class PassengerController {
                 return flight.getDepartureDate();
             }));
             return new Response("Passenger flights loaded succesfully", Status.OK, passengerFlights);
-        } catch (CloneNotSupportedException e) {
+        } catch (Exception e) {
             return new Response("Internal error loading passengers information", Status.INTERNAL_SERVER_ERROR);
         }
     }
