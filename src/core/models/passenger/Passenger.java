@@ -110,7 +110,12 @@ public class Passenger implements Clonable<Passenger>{
     
     @Override
     public Passenger clone(){
-        return new Passenger(id, firstname, lastname, birthDate, phoneNumber, country);
+        Passenger passenger = new Passenger(id, firstname, lastname, birthDate, phoneNumber, country);
+        for (Flight flight: this.getFlights())
+        {
+            passenger.addFlight(flight);
+        }
+        return passenger;
     }
 
 }
