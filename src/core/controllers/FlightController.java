@@ -6,7 +6,7 @@ import core.models.flight.Flight;
 import core.models.location.Location;
 import core.models.plane.Plane;
 import core.models.storage.FlightStorage;
-import core.models.storage.LocationStorage;
+import core.models.storage.Location.LocationStorage;
 import core.models.storage.Plane.PlaneStorage;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

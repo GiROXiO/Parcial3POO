@@ -4,6 +4,7 @@
  */
 package core.models.storage;
 
+import core.models.storage.Location.LocationStorage;
 import core.models.storage.Plane.PlaneStorage;
 import core.models.flight.Flight;
 import core.models.location.Location;

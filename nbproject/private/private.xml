@@ -3,29 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Parcial3POO/src/core/models/flight/Flight.java</file>
-            <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Parcial3POO/src/core/models/flight/FlightInterface.java</file>
-            <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Parcial3POO/src/core/models/flight/FlightDateManager.java</file>
-            <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Parcial3POO/src/core/models/flight/FlightDateManagerInterface.java</file>
-            <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Parcial3POO/src/core/models/flight/FlightPassengerManager.java</file>
-            <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Parcial3POO/src/core/models/flight/FlightPassengerManagerInterface.java</file>
-            <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Parcial3POO/src/core/models/Clonable.java</file>
-            <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Parcial3POO/src/core/controllers/FlightController.java</file>
-            <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Parcial3POO/src/core/controllers/PassengerController.java</file>
-=======
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/Clonable.java</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/json/planes.json</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/plane/PlaneFlightsManager.java</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/plane/PlaneFlightsManagerInterface.java</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/plane/Plane.java</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/storage/Plane/PlaneStorage.java</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/storage/Plane/PlaneJSON.java</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/views/AirportFrame.java</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/controllers/PlaneController.java</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/storage/FlightStorage.java</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/passenger/Passenger.java</file>
->>>>>>> 8a67ff4fd0dde563b926900bd85f876a5456dc09
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/storage/Location/LocationStorage.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/storage/Location/LocationJSON.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/storage/Passenger/PassengerStorage.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/storage/Passenger/PassengerJSON.java</file>
         </group>
     </open-files>
 </project-private>

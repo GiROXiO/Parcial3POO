@@ -2,13 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package core.models.storage;
+package core.models.storage.Location;
 
 import core.models.location.Location;
+import core.models.storage.JsonTransformer;
+import core.models.storage.Storage;
 import core.models.storage.utils.JsonPath;
 import core.models.storage.utils.JsonStorage;
-import java.util.Collections;
-import java.util.Comparator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,9 +16,11 @@ import org.json.JSONObject;
 public class LocationStorage extends Storage<Location> {
     
     private static LocationStorage instance;
+    private JsonTransformer<Location> transformer;
     
     private LocationStorage() {
         super(JsonPath.LOCATIONS.getPath());
+        this.transformer = new LocationJSON();
     }
     
     public static LocationStorage getInstance() {
@@ -59,14 +61,7 @@ public class LocationStorage extends Storage<Location> {
         try {
             JSONArray array = JsonStorage.readJson(path);
             for (int i = 0; i < array.length(); i++) {
-                JSONObject obj = array.getJSONObject(i);
-                String id = obj.getString("airportId");
-                String airportName = obj.getString("airportName");
-                String airportCity = obj.getString("airportCity");
-                String airportCountry = obj.getString("airportCountry");
-                Double airportLatitude = obj.getDouble("airportLatitude");
-                Double airportLongitude = obj.getDouble("airportLongitude");
-                Location location = new Location(id, airportName, airportCity, airportCountry, airportLatitude, airportLongitude);
+                Location location = transformer.fromJson(array.getJSONObject(i));
                 this.add(location);
             }
             
