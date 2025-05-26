@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Parcial3POO/src/core/models/flight/Flight.java</file>
             <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Parcial3POO/src/core/models/flight/FlightInterface.java</file>
             <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Parcial3POO/src/core/views/AirportFrame.java</file>
@@ -11,6 +12,15 @@
             <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Parcial3POO/src/core/models/flight/FlightPassengerManager.java</file>
             <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Parcial3POO/src/core/models/passenger/Passenger.java</file>
             <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Parcial3POO/src/core/models/passenger/PFlightManager.java</file>
+=======
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/flight/FlightPassengerManagerInterface.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/flight/FlightPassengerManager.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/passenger/Passenger.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/passenger/PFlightManagerInterface.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/passenger/PFlightManager.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/controllers/PassengerController.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/plane/Plane.java</file>
+>>>>>>> c8e9da4b7c501329177978d490afd6603a737426
         </group>
     </open-files>
 </project-private>
