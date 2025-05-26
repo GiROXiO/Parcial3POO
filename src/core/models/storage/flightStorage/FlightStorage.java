@@ -2,13 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package core.models.storage;
+package core.models.storage.flightStorage;
 
-import core.models.storage.Location.LocationStorage;
-import core.models.storage.Plane.PlaneStorage;
+import core.models.storage.locationstorage.LocationStorage;
+import core.models.storage.PlaneStorage.PlaneStorage;
 import core.models.flight.Flight;
 import core.models.location.Location;
 import core.models.plane.Plane;
+import core.models.storage.Storage;
 import core.models.storage.utils.JsonPath;
 import core.models.storage.utils.JsonStorage;
 import java.time.LocalDateTime;

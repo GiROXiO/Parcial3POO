@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package core.models.storage.Passenger;
+package core.models.storage.PlaneStorage;
 
-import core.models.passenger.Passenger;
+import core.models.plane.Plane;
 import core.models.storage.JsonTransformer;
 import core.models.storage.Storage;
 import core.models.storage.utils.JsonPath;
@@ -12,44 +12,39 @@ import core.models.storage.utils.JsonStorage;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-public class PassengerStorage extends Storage<Passenger> {
-
-    private static PassengerStorage instance;
-    private JsonTransformer<Passenger> transformer;
-
-    private PassengerStorage() {
-        super(JsonPath.PASSENGERS.getPath());
-        this.transformer = new PassengerJSON();
+public class PlaneStorage extends Storage<Plane>{
+     private static PlaneStorage instance;
+     public JsonTransformer<Plane> transformer;
+     
+    private PlaneStorage() {
+        super(JsonPath.PLANES.getPath());
+        this.transformer = new PlaneJSON();
     }
-
-    public static PassengerStorage getInstance() {
-        if (instance == null) {
-            instance = new PassengerStorage();
+    
+    public static PlaneStorage getInstance(){
+        if(instance == null){
+            instance = new PlaneStorage();
         }
         return instance;
     }
-
+ 
     @Override
-    public boolean add(Passenger obj) {
-        for (Passenger passenger : this.lista) {
-            if (passenger.getId() == obj.getId()) {
-                return false;
-            }
+    public boolean add(Plane obj) {
+        for(Plane plane : this.lista){
+            if(plane.getId().equals(obj.getId())) return false;
         }
         this.lista.add(obj);
         return true;
     }
 
     @Override
-    public Passenger get(String id) {
-        for (Passenger passenger : this.lista) {
-            if (String.valueOf(passenger.getId()).equalsIgnoreCase(id)) {
-                return passenger;
-            }
+    public Plane get(String id) {
+        for(Plane plane:this.lista){
+            if(String.valueOf(plane.getId()).equalsIgnoreCase(id)) return plane;
         }
         return null;
     }
-    
+
     @Override
     public boolean upd(int id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -60,13 +55,12 @@ public class PassengerStorage extends Storage<Passenger> {
         try {
             JSONArray array = JsonStorage.readJson(path);
             for (int i = 0; i < array.length(); i++) {
-                Passenger passenger = transformer.fromJson(array.getJSONObject(i));
-                this.add(passenger);
+                Plane plane = transformer.fromJson(array.getJSONObject(i));
+                this.add(plane);
             }
             
             return true;
         } catch (JSONException | NumberFormatException e) {
-            System.out.println("Error: " + e);
             return false;
         }
     }

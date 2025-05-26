@@ -1,4 +1,4 @@
-package core.models.storage.Passenger;
+package core.models.storage.passengerStorage;
 
 import core.models.passenger.Passenger;
 import core.models.passenger.PhoneNumber;

@@ -1,4 +1,4 @@
-package core.models.storage.Location;
+package core.models.storage.locationstorage;
 
 import core.models.location.Location;
 import core.models.storage.JsonTransformer;

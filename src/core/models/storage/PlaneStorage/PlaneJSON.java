@@ -1,4 +1,4 @@
-package core.models.storage.Plane;
+package core.models.storage.PlaneStorage;
 
 import core.models.plane.Plane;
 import core.models.storage.JsonTransformer;
