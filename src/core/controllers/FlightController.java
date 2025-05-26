@@ -147,7 +147,7 @@ public class FlightController {
                 if (fecha.isBefore(LocalDateTime.now())) {
                     return new Response("Departure date is not valid. The departure date cannot be earlier than the current date.", Status.BAD_REQUEST);
                 }
-            } catch (NumberFormatException e) {
+            } catch (Exception e) {
                 return new Response("Departure date is not valid.", Status.BAD_REQUEST);
             }
 
