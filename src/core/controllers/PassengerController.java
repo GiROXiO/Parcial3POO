@@ -373,7 +373,7 @@ public class PassengerController {
             }
 
             Collections.sort(passengerFlights, Comparator.comparing(flight -> {
-                return flight.getDepartureDate();
+                return flight.getFlightDM().getDepartureDate();
             }));
             return new Response("Passenger flights loaded succesfully", Status.OK, passengerFlights);
         } catch (Exception e) {

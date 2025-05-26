@@ -4,6 +4,7 @@
  */
 package core.models.flight;
 
+import core.models.Clonable;
 import core.models.location.Location;
 import core.models.passenger.Passenger;
 import core.models.plane.Plane;
@@ -14,53 +15,39 @@ import java.util.ArrayList;
  *
  * @author edangulo
  */
-public class Flight implements Cloneable{
+public class Flight implements Clonable<Flight>, FlightInterface{
     
     private final String id;
-    private ArrayList<Passenger> passengers;
     private Plane plane;
-    private Location departureLocation;
+    private final Location departureLocation;
     private Location scaleLocation;
-    private Location arrivalLocation;
-    private LocalDateTime departureDate;
-    private int hoursDurationArrival;
-    private int minutesDurationArrival;
-    private int hoursDurationScale;
-    private int minutesDurationScale;
+    private final Location arrivalLocation;
+    private final FlightPassengerManager flightPM;
+    private final FlightDateManager flightDM;
 
     public Flight(String id, Plane plane, Location departureLocation, Location arrivalLocation, LocalDateTime departureDate, int hoursDurationArrival, int minutesDurationArrival) {
         this.id = id;
-        this.passengers = new ArrayList<>();
         this.plane = plane;
         this.departureLocation = departureLocation;
         this.arrivalLocation = arrivalLocation;
-        this.departureDate = departureDate;
-        this.hoursDurationArrival = hoursDurationArrival;
-        this.minutesDurationArrival = minutesDurationArrival;
         
+        this.flightPM = new FlightPassengerManager();
+        this.flightDM = new FlightDateManager(departureDate, hoursDurationArrival, minutesDurationArrival);
         this.plane.addFlight(this);
     }
 
     public Flight(String id, Plane plane, Location departureLocation, Location scaleLocation, Location arrivalLocation, LocalDateTime departureDate, int hoursDurationArrival, int minutesDurationArrival, int hoursDurationScale, int minutesDurationScale) {
         this.id = id;
-        this.passengers = new ArrayList<>();
         this.plane = plane;
         this.departureLocation = departureLocation;
         this.scaleLocation = scaleLocation;
         this.arrivalLocation = arrivalLocation;
-        this.departureDate = departureDate;
-        this.hoursDurationArrival = hoursDurationArrival;
-        this.minutesDurationArrival = minutesDurationArrival;
-        this.hoursDurationScale = hoursDurationScale;
-        this.minutesDurationScale = minutesDurationScale;
         
+        this.flightPM = new FlightPassengerManager();
+        this.flightDM = new FlightDateManager(departureDate, hoursDurationArrival, minutesDurationArrival, hoursDurationScale, minutesDurationScale);
         this.plane.addFlight(this);
     }
-    
-    public void addPassenger(Passenger passenger) {
-        this.passengers.add(passenger);
-    }
-    
+
     public String getId() {
         return id;
     }
@@ -77,61 +64,57 @@ public class Flight implements Cloneable{
         return arrivalLocation;
     }
 
-    public LocalDateTime getDepartureDate() {
-        return departureDate;
-    }
-
-    public int getHoursDurationArrival() {
-        return hoursDurationArrival;
-    }
-
-    public void setHoursDurationArrival(int hoursDurationArrival) {
-        this.hoursDurationArrival = hoursDurationArrival;
-    }
-    
-    public int getMinutesDurationArrival() {
-        return minutesDurationArrival;
-    }
-
-    public void setMinutesDurationArrival(int minutesDurationArrival) {
-        this.minutesDurationArrival = minutesDurationArrival;
-    }
-
-    public int getHoursDurationScale() {
-        return hoursDurationScale;
-    }
-
-    public int getMinutesDurationScale() {
-        return minutesDurationScale;
-    }
-
     public Plane getPlane() {
         return plane;
     }
 
-    public void setDepartureDate(LocalDateTime departureDate) {
-        this.departureDate = departureDate;
-    }
-    
-    public LocalDateTime calculateArrivalDate() {
-        return departureDate.plusHours(hoursDurationScale).plusHours(hoursDurationArrival).plusMinutes(minutesDurationScale).plusMinutes(minutesDurationArrival);
-    }
-    
-    public void delay(int hours, int minutes) {
-        this.departureDate = this.departureDate.plusHours(hours).plusMinutes(minutes);
-    }
-    
-    public int getNumPassengers() {
-        return passengers.size();
+    // SRP Pasajeros del vuelo
+    @Override
+    public void addPassenger(Passenger passenger){
+        this.flightPM.addPassenger(passenger);
     }
     
     @Override
-    public Flight clone() throws CloneNotSupportedException{
-        return (Flight) super.clone();
+    public ArrayList<Passenger> getPassengers() {
+        return this.flightPM.getPassengers();
     }
 
     @Override
-    public String toString() {
-        return "Flight{" + "id=" + id + ", passengers=" + passengers + ", plane=" + plane + ", departureLocation=" + departureLocation + ", scaleLocation=" + scaleLocation + ", arrivalLocation=" + arrivalLocation + ", departureDate=" + departureDate + ", hoursDurationArrival=" + hoursDurationArrival + ", minutesDurationArrival=" + minutesDurationArrival + ", hoursDurationScale=" + hoursDurationScale + ", minutesDurationScale=" + minutesDurationScale + '}';
+    public int getNumPassengers() {
+        return this.flightPM.getNumPassengers();
+    }
+    
+    //SRP fechas de salida y llegada del vuelo
+    @Override
+    public LocalDateTime calculateArrivalDate() {
+        return this.flightDM.calculateArrivalDate();
+    }
+
+    @Override
+    public void delay(int hours, int minutes) {
+        this.flightDM.delay(hours, minutes);
+    }
+
+    public FlightPassengerManager getFlightPM() {
+        return flightPM;
+    }
+
+    public FlightDateManager getFlightDM() {
+        return flightDM;
+    }
+    
+    @Override
+    public Flight clone(){
+        return new Flight(
+                this.id, 
+                this.plane, 
+                this.departureLocation, 
+                this.scaleLocation, 
+                this.arrivalLocation, 
+                this.flightDM.getDepartureDate(),
+                this.flightDM.getHoursDurationArrival(), 
+                this.flightDM.getMinutesDurationArrival(), 
+                this.flightDM.getHoursDurationScale(), 
+                this.flightDM.getMinutesDurationScale());
     }
 }

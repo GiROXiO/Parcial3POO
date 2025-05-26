@@ -259,11 +259,11 @@ public class FlightController {
             }
 
             Collections.sort(copia, Comparator.comparing(flight -> {
-                return flight.getDepartureDate();
+                return flight.getFlightDM().getDepartureDate();
             }));
 
             return new Response("Flights information got succesfully", Status.OK, copia);
-        } catch (CloneNotSupportedException e) {
+        } catch (RuntimeException e) {
             return new Response("Internal error loading flights information", Status.INTERNAL_SERVER_ERROR);
         }
     }
@@ -275,7 +275,7 @@ public class FlightController {
             }
             String id = ((Flight) obj).clone().getId();
             return new Response("Flight ID got succesfully", Status.OK, id);
-        } catch (CloneNotSupportedException e) {
+        } catch (RuntimeException e) {
             return new Response("Internal error getting flight ID", Status.INTERNAL_SERVER_ERROR);
         }
     }
@@ -293,8 +293,8 @@ public class FlightController {
                     flight.getDepartureLocation().getAirportId(),
                     flight.getArrivalLocation().getAirportId(),
                     flight.getScaleLocation().getAirportId(),
-                    flight.getDepartureDate().toLocalDate(),
-                    flight.getDepartureDate().plusHours(flight.getHoursDurationArrival() + flight.getHoursDurationScale()).plusMinutes(flight.getMinutesDurationArrival() + flight.getMinutesDurationScale()).toLocalDate(),
+                    flight.getFlightDM().getDepartureDate().toLocalDate(),
+                    flight.getFlightDM().calculateArrivalDate().toLocalDate(),
                     flight.getPlane().getId(),
                     flight.getNumPassengers()
                 };
@@ -304,14 +304,14 @@ public class FlightController {
                     flight.getDepartureLocation().getAirportId(),
                     flight.getArrivalLocation().getAirportId(),
                     "Non-Stop",
-                    flight.getDepartureDate().toLocalDate(),
-                    flight.getDepartureDate().plusHours(flight.getHoursDurationArrival()).plusMinutes(flight.getMinutesDurationArrival()).toLocalDate(),
+                    flight.getFlightDM().getDepartureDate().toLocalDate(),
+                    flight.getFlightDM().calculateArrivalDate().toLocalDate(),
                     flight.getPlane().getId(),
                     flight.getNumPassengers()
                 };
             }
             return new Response("Flight information got succesfully", Status.OK, flightRow);
-        } catch (CloneNotSupportedException e) {
+        } catch (NullPointerException e) {
             return new Response("Internal error getting flight information", Status.INTERNAL_SERVER_ERROR);
         }
     }
@@ -326,17 +326,18 @@ public class FlightController {
             if (flight.getScaleLocation() != null) {
                 flightRow = new Object[]{
                     flight.getId(),
-                    flight.getDepartureDate().toLocalDate(),
-                    flight.getDepartureDate().plusHours(flight.getHoursDurationArrival() + flight.getHoursDurationScale()).plusMinutes(flight.getMinutesDurationArrival() + flight.getMinutesDurationScale()).toLocalDate()
+                    flight.getFlightDM().getDepartureDate().toLocalDate(),
+                    flight.getFlightDM().getDepartureDate().toLocalDate()
                 };
             } else {
                 flightRow = new Object[]{
                     flight.getId(),
-                    flight.getDepartureDate().toLocalDate(),
-                    flight.getDepartureDate().plusHours(flight.getHoursDurationArrival()).plusMinutes(flight.getMinutesDurationArrival()).toLocalDate(),};
+                    flight.getFlightDM().getDepartureDate().toLocalDate(),
+                    flight.getFlightDM().getDepartureDate().toLocalDate()
+                };
             }
             return new Response("Passenger flight information got succesfully", Status.OK, flightRow);
-        } catch (CloneNotSupportedException e) {
+        } catch (NullPointerException e) {
             return new Response("Internal error getting passenger flight information", Status.INTERNAL_SERVER_ERROR);
         }
     }
