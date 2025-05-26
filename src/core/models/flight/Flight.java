@@ -47,6 +47,17 @@ public class Flight implements Clonable<Flight>, FlightInterface{
         this.flightDM = new FlightDateManager(departureDate, hoursDurationArrival, minutesDurationArrival, hoursDurationScale, minutesDurationScale);
         this.plane.addFlight(this);
     }
+    
+    public Flight(Flight flight){
+        this.id = flight.id;
+        this.plane = flight.plane;
+        this.departureLocation = flight.departureLocation;
+        this.scaleLocation = flight.scaleLocation;
+        this.arrivalLocation = flight.arrivalLocation;
+        
+        this.flightPM = flight.flightPM;
+        this.flightDM = flight.flightDM;
+    }
 
     public String getId() {
         return id;
@@ -68,7 +79,6 @@ public class Flight implements Clonable<Flight>, FlightInterface{
         return plane;
     }
 
-    // SRP Pasajeros del vuelo
     @Override
     public void addPassenger(Passenger passenger){
         this.flightPM.addPassenger(passenger);
@@ -83,8 +93,7 @@ public class Flight implements Clonable<Flight>, FlightInterface{
     public int getNumPassengers() {
         return this.flightPM.getNumPassengers();
     }
-    
-    //SRP fechas de salida y llegada del vuelo
+
     @Override
     public LocalDateTime calculateArrivalDate() {
         return this.flightDM.calculateArrivalDate();
@@ -105,16 +114,6 @@ public class Flight implements Clonable<Flight>, FlightInterface{
     
     @Override
     public Flight clone(){
-        return new Flight(
-                this.id, 
-                this.plane, 
-                this.departureLocation, 
-                this.scaleLocation, 
-                this.arrivalLocation, 
-                this.flightDM.getDepartureDate(),
-                this.flightDM.getHoursDurationArrival(), 
-                this.flightDM.getMinutesDurationArrival(), 
-                this.flightDM.getHoursDurationScale(), 
-                this.flightDM.getMinutesDurationScale());
+        return new Flight(this);
     }
 }

@@ -1981,6 +1981,12 @@ public class AirportFrame extends javax.swing.JFrame {
             DF_IdComboBox.setSelectedIndex(0);
             DF_HourComboBox.setSelectedIndex(0);
             DF_MinuteComboBox.setSelectedIndex(0);
+            
+            DF_IdComboBox.removeAllItems();
+            ATF_FlightComboBox.removeAllItems();
+            DF_IdComboBox.addItem("ID");
+            ATF_FlightComboBox.addItem("Flight");
+            this.generateFlights();           
         }
     }//GEN-LAST:event_DF_DelayButtonActionPerformed
 

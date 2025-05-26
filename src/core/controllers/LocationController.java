@@ -164,7 +164,7 @@ public class LocationController {
             }));
             
             return new Response("Locations information got succesfully", Status.OK, copia);
-        } catch (CloneNotSupportedException e) {
+        } catch (RuntimeException e) {
             return new Response("Internal error loading locations information", Status.INTERNAL_SERVER_ERROR);
         }
     }
@@ -176,7 +176,7 @@ public class LocationController {
             }
             String id = ((Location) obj).clone().getAirportId();
             return new Response("Location ID got succesfully", Status.OK, id);
-        } catch (CloneNotSupportedException e) {
+        } catch (RuntimeException e) {
             return new Response("Internal error getting location ID", Status.INTERNAL_SERVER_ERROR);
         }
     }
@@ -194,7 +194,7 @@ public class LocationController {
                 location.getAirportCountry(),
             };
             return new Response("Location information got succesfully", Status.OK, locationRow);
-        } catch (CloneNotSupportedException e) {
+        } catch (RuntimeException e) {
             return new Response("Internal error getting location information", Status.INTERNAL_SERVER_ERROR);
         }
     }

@@ -4,11 +4,13 @@
  */
 package core.models.location;
 
+import core.models.Clonable;
+
 /**
  *
  * @author edangulo
  */
-public class Location implements Cloneable{
+public class Location implements Clonable<Location>{
     
     private final String airportId;
     private String airportName;
@@ -51,12 +53,14 @@ public class Location implements Cloneable{
     }
     
     @Override
-    public Location clone() throws CloneNotSupportedException{
-        return (Location) super.clone();
-    }
-
-    @Override
-    public String toString() {
-        return "Location{" + "airportId=" + airportId + ", airportName=" + airportName + ", airportCity=" + airportCity + ", airportCountry=" + airportCountry + ", airportLatitude=" + airportLatitude + ", airportLongitude=" + airportLongitude + '}';
+    public Location clone(){
+        return new Location(
+                this.airportId,
+                this.airportName,
+                this.airportCity,
+                this.airportCountry,
+                this.airportLatitude,
+                this.airportLongitude
+        );
     }
 }
