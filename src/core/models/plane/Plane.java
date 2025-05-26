@@ -66,7 +66,12 @@ public class Plane implements Clonable<Plane>{
     @Override
     public Plane clone() 
     {
-        return new Plane(id, brand, model, maxCapacity, airline);
+        Plane plane = new Plane(id, brand, model, maxCapacity, airline);
+        for (Flight flight: this.getFlights())
+        {
+            plane.addFlight(flight);
+        }
+        return plane;
     }
 
     @Override

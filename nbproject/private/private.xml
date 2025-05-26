@@ -4,13 +4,16 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/Clonable.java</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/passenger/Passenger.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/json/planes.json</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/plane/PlaneFlightsManager.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/plane/PlaneFlightsManagerInterface.java</file>
             <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/plane/Plane.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/storage/Plane/PlaneStorage.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/storage/Plane/PlaneJSON.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/views/AirportFrame.java</file>
             <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/controllers/PlaneController.java</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/controllers/PassengerController.java</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/storage/Passenger/PassengerJSON.java</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/storage/Passenger/PassengerStorage.java</file>
-            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/passenger/PhoneNumber.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/storage/FlightStorage.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/passenger/Passenger.java</file>
         </group>
     </open-files>
 </project-private>
