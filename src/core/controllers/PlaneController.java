@@ -19,13 +19,8 @@ public class PlaneController {
 
                 if (id.length() == 7) {
                     for (int i = 0; i <= 1; i++) {
-
-                        if (Character.isDigit(id.charAt(i))) {
-                            return new Response("ID must follow the XXYYYYY format. X must correspond to a capital letter, not a numeric or blank value.", Status.BAD_REQUEST);
-                        }
-
-                        if (Character.isLowerCase(id.charAt(i))) {
-                            return new Response("ID must follow the XXYYYYY format. X must correspond to a capital letter, not a lower case letter.", Status.BAD_REQUEST);
+                        if (Character.isLowerCase(id.charAt(i)) || !Character.isLetter(id.charAt(i))) {
+                            return new Response("ID must follow the XXYYYYY format. X must correspond to a capital letter.", Status.BAD_REQUEST);
                         }
                     }
 

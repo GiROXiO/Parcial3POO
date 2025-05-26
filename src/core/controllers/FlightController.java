@@ -30,13 +30,10 @@ public class FlightController {
                 if (id.length() == 6) {
                     for (int i = 0; i <= 2; i++) {
 
-                        if (Character.isDigit(id.charAt(i))) {
-                            return new Response("ID must follow the XXXYYY format. X must correspond to a capital letter, not a numeric or blank value.", Status.BAD_REQUEST);
+                        if (Character.isLowerCase(id.charAt(i)) || !Character.isLetter(id.charAt(i))) {
+                            return new Response("ID must follow the XXXYYY format. X must correspond to a capital letter.", Status.BAD_REQUEST);
                         }
 
-                        if (Character.isLowerCase(id.charAt(i))) {
-                            return new Response("ID must follow the XXXYYY format. X must correspond to a capital letter, not a lower case letter.", Status.BAD_REQUEST);
-                        }
                     }
 
                     for (int i = 3; i <= 5; i++) {

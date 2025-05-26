@@ -20,8 +20,8 @@ public class LocationController {
             try {
                 if (id.length() == 3) {
                     for (int i = 0; i < id.length(); i++) {
-                        if (Character.isLowerCase(id.charAt(i))) {
-                            return new Response("ID must contain 3 uppercase letters.", Status.BAD_REQUEST);
+                        if (Character.isLowerCase(id.charAt(i)) || !Character.isLetter(id.charAt(i))) {
+                            return new Response("ID must contain only 3 uppercase letters.", Status.BAD_REQUEST);
                         }
                     }
                 } else {
