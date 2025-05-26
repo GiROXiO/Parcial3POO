@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Parcial3POO/src/core/models/flight/Flight.java</file>
             <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Parcial3POO/src/core/models/flight/FlightInterface.java</file>
             <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Parcial3POO/src/core/models/flight/FlightDateManager.java</file>
@@ -10,6 +11,12 @@
             <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Parcial3POO/src/core/models/flight/FlightPassengerManager.java</file>
             <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Parcial3POO/src/core/models/flight/FlightPassengerManagerInterface.java</file>
             <file>file:/D:/trabajosUniversidad/tercerSemestre/POO/Parcial3/Parcial3POO/src/core/controllers/FlightController.java</file>
+=======
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/storage/Location/LocationStorage.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/storage/Location/LocationJSON.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/storage/Passenger/PassengerStorage.java</file>
+            <file>file:/C:/Users/andel/OneDrive/Escritorio/Parcial3POO/src/core/models/storage/Passenger/PassengerJSON.java</file>
+>>>>>>> c5e0a36aeee8559f8707c5784fa9718703a7a745
         </group>
     </open-files>
 </project-private>
