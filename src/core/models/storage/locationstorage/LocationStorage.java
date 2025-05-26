@@ -52,11 +52,6 @@ public class LocationStorage extends Storage<Location> {
     }
     
     @Override
-    public boolean upd(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
-    @Override
     public boolean load() {
         try {
             JSONArray array = JsonStorage.readJson(path);
